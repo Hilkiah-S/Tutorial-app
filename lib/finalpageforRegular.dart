@@ -15,6 +15,7 @@ FINALPAGERR({Key? mykey,required this.answersinternet,required this.answersusers
 }
 
 class _FINALPAGEState extends State<FINALPAGERR> {
+  late List codestaken;
    final _mybox = Hive.box('dotBox');
 int numberofquestions=0;
 
@@ -56,18 +57,73 @@ compute();
       body: GestureDetector(
         onTap: (){_sendCode();},
         child: Container(
-          width: double.infinity,
-          height: double.infinity,
           decoration:BoxDecoration(
-            color: Colors.grey[900],
-          
-          ) ,
-        child: Center(
-          child: Text("You got ${correct}/${widget.answersinternet.length} ",style: TextStyle(color:Colors.white,fontSize: 40),),
-        ),
-        ),
-      ),
-    );
+                image:  DecorationImage(
+                image: AssetImage("assets/splash/thumbs-up.jpg"),
+                fit: BoxFit.cover,
+              ),
+                color: Colors.grey[900],
+                
+              ) ,
+          child: Stack(
+            children: [
+               Align(
+                alignment: Alignment.bottomCenter,
+                 child: Padding(
+                   padding: const EdgeInsets.all(10.0),
+                   child: Container(
+                            height: 200,
+                            width:double.infinity,
+                             decoration: BoxDecoration(
+                    
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(40),
+                    ),
+                    color: Colors.white.withOpacity(0.8),
+                             ),
+                             child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(bottom:8.0),
+                          child: Icon(Icons.check_circle_outline,size: 40,color: Colors.green,),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom:15.0),
+                          child: Text("You got ${correct}/${widget.answersinternet.length} ",style: TextStyle(color:Colors.black,fontSize: 40),),
+                        ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                         ElevatedButton(
+  style: ElevatedButton.styleFrom(
+    backgroundColor: Colors.green, // specify the background color
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(90), // specify the border radius
+    ),
+    minimumSize: Size(290, 40), // specify the minimum width and height of the button
+  ),
+  onPressed: () {
+     _sendCode();
+  },
+  child: Text('Complete',style: TextStyle(fontSize: 20),),
+),
+
+
+                            ],
+                          ),
+                      ],
+                    ),
+                             )),
+                 ),
+               ),
+      
+   
+            ],
+          ),
+        )));
   }
   void _sendCode() async{
    print(correct);
@@ -150,6 +206,7 @@ compute();
     },
   );
 }
-
+//  codestaken.add(_mybox.get(58));
+//     _mybox.put(360,codestaken);
 
 }

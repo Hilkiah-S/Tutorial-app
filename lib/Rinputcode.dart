@@ -92,7 +92,14 @@ codetext = TextEditingController();
                                         // ),
                                         child: Text("Submit",style:TextStyle(fontSize: 25,color:Colors.white,fontFamily: "Poppins",)),
                                         onPressed: isButtonActive?  (){print("LOGIN");
-                                        _sendCode();
+                                        if(codetext.text.isNotEmpty){
+                                          if(_mybox.get(360)!=null&&_mybox.get(360).contains(codetext.text)){
+                                          _showErrorDialog();
+                                          }
+                                          else{
+                                           _sendCode();   
+                                          }
+                                        }
                                         }:null,
                                         
                                         
@@ -139,7 +146,34 @@ codetext = TextEditingController();
    }
    
   }
-  
+  Future<void> _showErrorDialog() async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext fcontext) {
+      return AlertDialog(
+        title: const Text('Our Records show you took this test,already'),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: const <Widget>[
+              
+              Icon(Icons.warning,color: Colors.red,size: 120,),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('Ok'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
 
 }
 

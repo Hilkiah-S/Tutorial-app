@@ -149,341 +149,347 @@ double gx = 0, gy = 0, gz = 0;
   int c1 = 0, c2 = 1, c3 = 2, c4 = 3;
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-      body: GestureDetector(
-        onTap: () {
-                  speakthewhole();
-                 
-                },
-                onLongPress: () {
-                 
-                  setState(() {
-                    floodgate = true;
-                  });
-                  if (floodgate==true) {
-                    flutterTts.setSpeechRate(0.4);
-                    flutterTts.speak(anylarge);
-                    if (true) {
-               
-                      gyroscopeEvents.listen((GyroscopeEvent event) {
-                        setState(() {
-                          // gx = event.x;
-                          gy = event.y;
-                          gz = event.z;
-                        });
-                      
-                        if (gz >= 2) {
-                          flutterTts.setSpeechRate(0.4);
-                          flutterTts.speak("You Chose A");
-                          Determiner = 1;
-                          
-                            Vibration.vibrate();
-                          setState(() {
-                            lastanswer="A";
-                          });
-                        }
-                        if (gz <= -2) {
-                          flutterTts.setSpeechRate(0.4);
-                          flutterTts.speak("You Chose B");
-                          Determiner = 2;
-                          
-                            Vibration.vibrate();
-                          setState(() {
-                            lastanswer="B";
-                          });
-                        }
-                        if (gy < -4) {
-                          
-                            Vibration.vibrate();
-                          
-                          flutterTts.setSpeechRate(0.4);
-                          flutterTts.speak("You Chose C");
-                          Determiner = 3;
-                          setState(() {
-                            lastanswer="C";
-                          });
-                        } 
-                        if (gy > 5) {
-                          
-                            Vibration.vibrate();
-                          
-                          flutterTts.setSpeechRate(0.4);
-                          flutterTts.speak("You chose D");
-                           setState(() {
-                            lastanswer="D";
-                          });
-                          Determiner = 4;
-                        }
-                      });
-                    } else {
+    return  WillPopScope(
+      onWillPop: backIsPressed,
+      child: Scaffold(
+        body: GestureDetector(
+          onTap: () {
+                    speakthewhole();
+                   
+                  },
+                  onLongPress: () {
+                   
+                    setState(() {
+                      floodgate = true;
+                    });
+                    if (floodgate==true) {
                       flutterTts.setSpeechRate(0.4);
-                      flutterTts.speak("Please hold your phone still, first");
+                      flutterTts.speak(anylarge);
+                      if (true) {
+                 
+                        gyroscopeEvents.listen((GyroscopeEvent event) {
+                          setState(() {
+                            // gx = event.x;
+                            gy = event.y;
+                            gz = event.z;
+                          });
+                        
+                          if (gz >= 2) {
+                            flutterTts.setSpeechRate(0.4);
+                            flutterTts.speak("You Chose A");
+                            Determiner = 1;
+                            
+                              Vibration.vibrate();
+                            setState(() {
+                              lastanswer="A";
+                            });
+                          }
+                          if (gz <= -2) {
+                            flutterTts.setSpeechRate(0.4);
+                            flutterTts.speak("You Chose B");
+                            Determiner = 2;
+                            
+                              Vibration.vibrate();
+                            setState(() {
+                              lastanswer="B";
+                            });
+                          }
+                          if (gy < -4) {
+                            
+                              Vibration.vibrate();
+                            
+                            flutterTts.setSpeechRate(0.4);
+                            flutterTts.speak("You Chose C");
+                            Determiner = 3;
+                            setState(() {
+                              lastanswer="C";
+                            });
+                          } 
+                          if (gy > 5) {
+                            
+                              Vibration.vibrate();
+                            
+                            flutterTts.setSpeechRate(0.4);
+                            flutterTts.speak("You chose D");
+                             setState(() {
+                              lastanswer="D";
+                            });
+                            Determiner = 4;
+                          }
+                        });
+                      } else {
+                        flutterTts.setSpeechRate(0.4);
+                        flutterTts.speak("Please hold your phone still, first");
+                      }
+                      setState(() {
+                        floodgate = false;
+                      });
                     }
+                  },
+                  onLongPressEnd: (details) {
+                    
                     setState(() {
                       floodgate = false;
                     });
-                  }
-                },
-                onLongPressEnd: (details) {
-                  
-                  setState(() {
-                    floodgate = false;
-                  });
-                  if (Determiner != 0) {
-                    flutterTts.speak(
-                        "Your answer is set to ${lastanswer}, if you want to change it, longpress again and do so,you can move on to the next question by doubletapping");
-                  } else {
-                    flutterTts.speak(
-                        "You didn't set any answer,Please longpress to give ananswer, if you Doubletap now,it will be considered as you skipped this question ");
-                  }
-                },
-                 onDoubleTap: () {
-                  setState(() {
-                    floodgate = false;
-                  });
-                  useranswers.add(Determiner);
-                  setState(() {
-                    if (currentindex < widget.questions.length-1) {
-                      currentindex++;
-                    
-                    } else if (currentindex == widget.questions.length-1) {
-                      setState(() {
-                        currentindex = currentindex;
-
-                      });
-          
-                   verify(useranswers, answers, questions.length);
-                   flutterTts.stop();
-                               Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => FINALPAGE(answersinternet:answers,answersusers: useranswers)),
-          );
-
+                    if (Determiner != 0) {
+                      flutterTts.speak(
+                          "Your answer is set to ${lastanswer}, if you want to change it, longpress again and do so,you can move on to the next question by doubletapping");
+                    } else {
+                      flutterTts.speak(
+                          "You didn't set any answer,Please longpress to give ananswer, if you Doubletap now,it will be considered as you skipped this question ");
                     }
-                  });
-                  speakthewhole();
-                },
-        child: Stack(
-          children: [
-            Container(
-                  decoration: new BoxDecoration(
-                    color: Colors.grey[900],
-                    // gradient: new LinearGradient(
-                    //     colors: [
-                    //       const Color(0xFF02BB9F),
-                    //       const Color(0xFF00CCFF),
-                    //     ],
-                    //     begin: const FractionalOffset(0.0, 0.0),
-                    //     end: const FractionalOffset(1.0, 0.0),
-                    //     stops: [0.0, 1.0],
-                    //     tileMode: TileMode.clamp),
-                  ),
-                  child:Padding(
-                    padding: const EdgeInsets.only(top:30),
-                    child: Column(
-                      children: [
-                        Stack(
-                          children: [
-                             Padding(
-                               padding: const EdgeInsets.only(top:90.0),
-                               child: Center(
-                                child: Text(
-            _formatDuration(Duration(seconds: _secondsRemaining)),
-            style: TextStyle(fontSize: 30,color:Colors.white),
-                  ),
-                            ),
-                             ),
-                            Center(
-                              child: Padding(
-                                padding: const EdgeInsets.only(top:35,bottom: 20),
-                                child: TweenAnimationBuilder(tween: Tween(begin: 0.0,end: 1.0), duration: Duration(minutes: 20), builder: ((context,value,_) => SizedBox(
-                                  width: 150,
-                                  height: 150,
-                                  child: CircularProgressIndicator(
-                                    value: value,
-                                    backgroundColor: Colors.deepOrange,
-                                    strokeWidth: 4,
-                                  
-                                  ),
-                                ))),
-                              ),
-                            ),
-                           
-                          ],
-                        ),
-                        Center(
-                              
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(left:15.0,right: 15,bottom: 8),
-                                      child: Container(
-                                        width: double.infinity,
-                                        height: 400,
-                                        decoration:BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.all(Radius.circular(30))
-                                        ) ,
-                                        child: Column(
-                                         
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(top:15.0, left: 20,right: 10,bottom:20),
-                                              child: Text(
-                                                widget.questions[currentindex].question,
-                                                style: TextStyle(
-                                                    color: Color.fromARGB(255, 90, 89, 89),
-                                                    fontSize: 25,
-                                                    fontWeight: FontWeight.bold),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(left:10,right: 10,top:10,bottom: 5),
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                children: [
-                                                  Expanded(
-                                                    child: Container(
-                                                      decoration: BoxDecoration(
-                                                        color: Colors.white,
-                                                        border: Border.all(
-                                                          color:Colors.grey,
-                                                        ),
-                                                        borderRadius: BorderRadius.all(
-                                                          Radius.circular(
-                                                            30
-                                                          )
-                                                        )
-                                                      ),
-                                                      child: TextButton(
-                                                        onPressed: null,
-                                                        child: Text(
-                                                          widget.questions[currentindex].choicea,
-                                                          style: TextStyle(
-                                                              color: Color.fromARGB(255, 83, 80, 80),
-                                                              
-                                                              fontSize: 25),
-                                                        ),
-                                                        
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(left:10,right: 10,top:5,bottom: 5),
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                children: [
-                                                  Expanded(
-                                                    child: Container(
-                                                      decoration: BoxDecoration(
-                                                        color: Colors.white,
-                                                        border: Border.all(
-                                                          color:Colors.grey,
-                                                        ),
-                                                        borderRadius: BorderRadius.all(
-                                                          Radius.circular(
-                                                            30
-                                                          )
-                                                        )
-                                                      ),
-                                                      child: TextButton(
-                                                        onPressed: null,
-                                                        child: Text(
-                                                           widget.questions[currentindex].choiceb,
-                                                          style: TextStyle(
-                                                              color: Color.fromARGB(255, 83, 80, 80),
-                                                              
-                                                              fontSize: 25),
-                                                        ),
-                                                        
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                           Padding(
-                                              padding: const EdgeInsets.only(left:10,right: 10,top:5,bottom: 5),
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                children: [
-                                                  Expanded(
-                                                    child: Container(
-                                                      decoration: BoxDecoration(
-                                                        color: Colors.white,
-                                                        border: Border.all(
-                                                          color:Colors.grey,
-                                                        ),
-                                                        borderRadius: BorderRadius.all(
-                                                          Radius.circular(
-                                                            30
-                                                          )
-                                                        )
-                                                      ),
-                                                      child: TextButton(
-                                                        onPressed: null,
-                                                        child: Text(
-                                                          widget.questions[currentindex].choicec,
-                                                          style: TextStyle(
-                                                              color: Color.fromARGB(255, 83, 80, 80),
-                                                              
-                                                              fontSize: 25),
-                                                        ),
-                                                        
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(left:10,right: 10,top:5,bottom: 5),
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                children: [
-                                                  Expanded(
-                                                    child: Container(
-                                                      decoration: BoxDecoration(
-                                                        color: Colors.white,
-                                                        border: Border.all(
-                                                          color:Colors.grey,
-                                                        ),
-                                                        borderRadius: BorderRadius.all(
-                                                          Radius.circular(
-                                                            30
-                                                          )
-                                                        )
-                                                      ),
-                                                      child: TextButton(
-                                                        onPressed: null,
-                                                        
-                                                        child: Text(
-                                                           widget.questions[currentindex].choiced,
-                                                          style: TextStyle(
-                                                              color: Color.fromARGB(255, 83, 80, 80),
-                                                              
-                                                              fontSize: 25),
-                                                        ),
-                                                        
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ), 
-                        
-                        ),
-                      ],
+                  },
+                   onDoubleTap: () {
+                    setState(() {
+                      floodgate = false;
+                    });
+                    useranswers.add(Determiner);
+                    setState(() {
+                      if (currentindex < widget.questions.length-1) {
+                        currentindex++;
+                      
+                      } else if (currentindex == widget.questions.length-1) {
+                        setState(() {
+                          currentindex = currentindex;
+    
+                        });
+            
+                     verify(useranswers, answers, questions.length);
+                     flutterTts.stop();
+                                 Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => FINALPAGE(answersinternet:answers,answersusers: useranswers)),
+            );
+    
+                      }
+                    });
+                    speakthewhole();
+                  },
+          child: Stack(
+            children: [
+              Container(
+                    decoration: new BoxDecoration(
+                      color: Colors.grey[900],
+                      // gradient: new LinearGradient(
+                      //     colors: [
+                      //       const Color(0xFF02BB9F),
+                      //       const Color(0xFF00CCFF),
+                      //     ],
+                      //     begin: const FractionalOffset(0.0, 0.0),
+                      //     end: const FractionalOffset(1.0, 0.0),
+                      //     stops: [0.0, 1.0],
+                      //     tileMode: TileMode.clamp),
                     ),
-                  )),
-          ],
+                    child:Padding(
+                      padding: const EdgeInsets.only(top:30),
+                      child: Column(
+                        children: [
+                          Stack(
+                            children: [
+                               Padding(
+                                 padding: const EdgeInsets.only(top:90.0),
+                                 child: Center(
+                                  child: Text(
+              _formatDuration(Duration(seconds: _secondsRemaining)),
+              style: TextStyle(fontSize: 30,color:Colors.white),
+                    ),
+                              ),
+                               ),
+                              Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top:35,bottom: 20),
+                                  child: TweenAnimationBuilder(tween: Tween(begin: 0.0,end: 1.0), duration: Duration(minutes: widget.seconds), builder: ((context,value,_) => SizedBox(
+                                    width: 150,
+                                    height: 150,
+                                    child: CircularProgressIndicator(
+                                      value: value,
+                                      backgroundColor: Colors.deepOrange,
+                                      strokeWidth: 4,
+                                    
+                                    ),
+                                  ))),
+                                ),
+                              ),
+                             
+                            ],
+                          ),
+                          Center(
+                                
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(left:15.0,right: 15,bottom: 8),
+                                        child: Container(
+                                          width: double.infinity,
+                                          height: 400,
+                                          decoration:BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.all(Radius.circular(30))
+                                          ) ,
+                                          child: Column(
+                                           
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(top:15.0, left: 20,right: 10,bottom:20),
+                                                child: Text(
+                                                  widget.questions[currentindex].question,
+                                                  style: TextStyle(
+                                                      color: Color.fromARGB(255, 90, 89, 89),
+                                                      fontSize: 25,
+                                                      fontWeight: FontWeight.bold),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(left:10,right: 10,top:10,bottom: 5),
+                                                child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: [
+                                                    Expanded(
+                                                      child: Container(
+                                                        decoration: BoxDecoration(
+                                                          color: Colors.white,
+                                                          border: Border.all(
+                                                            color:Colors.grey,
+                                                          ),
+                                                          borderRadius: BorderRadius.all(
+                                                            Radius.circular(
+                                                              30
+                                                            )
+                                                          )
+                                                        ),
+                                                        child: TextButton(
+                                                          onPressed: null,
+                                                          child: Text(
+                                                            widget.questions[currentindex].choicea,
+                                                            style: TextStyle(
+                                                                color: Color.fromARGB(255, 83, 80, 80),
+                                                                
+                                                                fontSize: 25),
+                                                          ),
+                                                          
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(left:10,right: 10,top:5,bottom: 5),
+                                                child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: [
+                                                    Expanded(
+                                                      child: Container(
+                                                        decoration: BoxDecoration(
+                                                          color: Colors.white,
+                                                          border: Border.all(
+                                                            color:Colors.grey,
+                                                          ),
+                                                          borderRadius: BorderRadius.all(
+                                                            Radius.circular(
+                                                              30
+                                                            )
+                                                          )
+                                                        ),
+                                                        child: TextButton(
+                                                          onPressed: null,
+                                                          child: Text(
+                                                             widget.questions[currentindex].choiceb,
+                                                            style: TextStyle(
+                                                                color: Color.fromARGB(255, 83, 80, 80),
+                                                                
+                                                                fontSize: 25),
+                                                          ),
+                                                          
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                             Padding(
+                                                padding: const EdgeInsets.only(left:10,right: 10,top:5,bottom: 5),
+                                                child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: [
+                                                    Expanded(
+                                                      child: Container(
+                                                        decoration: BoxDecoration(
+                                                          color: Colors.white,
+                                                          border: Border.all(
+                                                            color:Colors.grey,
+                                                          ),
+                                                          borderRadius: BorderRadius.all(
+                                                            Radius.circular(
+                                                              30
+                                                            )
+                                                          )
+                                                        ),
+                                                        child: TextButton(
+                                                          onPressed: null,
+                                                          child: Text(
+                                                            widget.questions[currentindex].choicec,
+                                                            style: TextStyle(
+                                                                color: Color.fromARGB(255, 83, 80, 80),
+                                                                
+                                                                fontSize: 25),
+                                                          ),
+                                                          
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(left:10,right: 10,top:5,bottom: 5),
+                                                child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: [
+                                                    Expanded(
+                                                      child: Container(
+                                                        decoration: BoxDecoration(
+                                                          color: Colors.white,
+                                                          border: Border.all(
+                                                            color:Colors.grey,
+                                                          ),
+                                                          borderRadius: BorderRadius.all(
+                                                            Radius.circular(
+                                                              30
+                                                            )
+                                                          )
+                                                        ),
+                                                        child: TextButton(
+                                                          onPressed: null,
+                                                          
+                                                          child: Text(
+                                                             widget.questions[currentindex].choiced,
+                                                            style: TextStyle(
+                                                                color: Color.fromARGB(255, 83, 80, 80),
+                                                                
+                                                                fontSize: 25),
+                                                          ),
+                                                          
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ), 
+                          
+                          ),
+                        ],
+                      ),
+                    )),
+            ],
+          ),
         ),
       ),
     );
+  }
+  Future<bool>backIsPressed()async{
+   return false;
   }
 }

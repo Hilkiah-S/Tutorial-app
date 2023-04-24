@@ -11,6 +11,7 @@ class Firstsight extends StatefulWidget {
 }
 
 class _FirstsightState extends State<Firstsight> {
+  
   final _mybox = Hive.box('dotBox');
   @override
   Widget build(BuildContext context) {

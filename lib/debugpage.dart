@@ -38,19 +38,21 @@ class _DebudingState extends State<Debuding> {
                  child: Text('Logout'),
                ),
           ),
-      Positioned(
-        top:100,
-        left:12,
-        child: Container(
-            width:335,
-            height: 250,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-         image: AssetImage('assets/splash/firstpage.jpg'),
-         fit: BoxFit.cover),
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-            ),
-           ),
+      Align(
+        alignment: Alignment.center,
+        child: Padding(
+          padding: const EdgeInsets.only(bottom:190.0,right: 15,left: 15),
+          child: Container(
+                width:double.infinity,
+                height: 250,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+             image: AssetImage('assets/splash/firstpage.jpg'),
+             fit: BoxFit.cover),
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+                ),
+               ),
+        ),
       ),
          Align(
           alignment: Alignment.bottomCenter,

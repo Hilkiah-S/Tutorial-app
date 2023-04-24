@@ -70,7 +70,10 @@ flutterTts.speak("You got ${correct} out of ${widget.answersinternet.length} ");
     );
   }
   void _sendCode() async{
-   print(correct);
+   print(_mybox.get(57));
+    print(correct);
+   print(_mybox.get(80));
+    print(_mybox.get(90));
     Response<Map<String, dynamic>> response =
         await Dio().post("https://berhan.addisphoenix.com/finalscore.php",data: {
           "courseid":_mybox.get(57),
@@ -96,6 +99,7 @@ _showErrorDialog();
    
   }
   Future<void> _showMyDialog() async {
+    
   return showDialog<void>(
     context: context,
     barrierDismissible: false, // user must tap button!
