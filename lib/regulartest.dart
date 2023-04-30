@@ -3,6 +3,9 @@ import 'package:tutorialapp/finalpageforRegular.dart';
 import 'dart:async';
 import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import 'package:tutorialapp/pass.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:hive/hive.dart';
+import 'package:dio/dio.dart';
 class InternetquestionSightRR extends StatefulWidget {
   // const InternetquestionSight({super.key});
 
@@ -13,7 +16,9 @@ class InternetquestionSightRR extends StatefulWidget {
   State<InternetquestionSightRR> createState() => _InternetquestionSightState();
 }
 
-class _InternetquestionSightState extends State<InternetquestionSightRR> {
+class _InternetquestionSightState extends State<InternetquestionSightRR> with WidgetsBindingObserver  {
+  int correct=0;
+   final _mybox = Hive.box('dotBox');
 late int _secondsRemaining;
   late Timer _timer;
   List answers = [];
@@ -25,10 +30,20 @@ addanswers(){
   Future<void> disableScreenshot() async {
   await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
 }
+
   @override
   void initState() {
+     AwesomeNotifications().isNotificationAllowed().then(
+   (isAllowed){
+    if(!isAllowed){
+      AwesomeNotifications().requestPermissionToSendNotifications(); 
+    }
+   }
+    );
     disableScreenshot();
+   
     super.initState();
+     WidgetsBinding.instance.addObserver(this);
     _secondsRemaining = widget.seconds*60;
     _startTimer();
     addanswers();
@@ -37,9 +52,33 @@ addanswers(){
   @override
   void dispose() {
     _timer.cancel();
+     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
-
+  backgroundcalled(){
+     AwesomeNotifications().createNotification(content: NotificationContent(
+        id:10,
+        channelKey: 'basic_channel',
+        title: 'You can not exit, in the middle of exam',
+        body: 'You have 15 secs to return',
+      ),);
+  }
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused) {
+     backgroundcalled();
+      print('App is in background!');
+    }
+   if (state == AppLifecycleState.detached) {
+     AwesomeNotifications().createNotification(content: NotificationContent(
+        id:12,
+        channelKey: 'basic_channel',
+        title: 'You have exited!',
+        body: ', your result so far will be sent to the Web',
+      ),);
+      print('App is in background!');
+    }
+  }
   void _startTimer() {
     const oneSec = Duration(seconds: 1);
     _timer = Timer.periodic(oneSec, (timer) {
@@ -132,7 +171,7 @@ useranswers.add(0);
   List <Icons> imgs=[];
  
    
- 
+ List newanswers=[];
   int Determiner = 0;
   bool floodgate = false;
   int currentindex = 0;
@@ -434,6 +473,50 @@ useranswers.add(0);
       ],
     ),
   );
+  
 }
+compute(){
+for (int j = 0; j < answers.length; j++) {
+  try {
+    newanswers.add(int.parse(answers[j]));
+  } catch (e) {
+    print("Error parsing ${answers[j]}: $e");
+  }
+}
+  for(int i=0;i<answers.length;i++){
+    if(newanswers[i]==useranswers[i]){
+       setState(() {
+         correct+=1;
+       });
+    }
+  }
+    
 
-}
+void _sendCode() async{
+   print(correct);
+    Response<Map<String, dynamic>> response =
+        await Dio().post("https://berhan.addisphoenix.com/finalscore.php",data: {
+          "courseid":_mybox.get(58),
+          "score":correct,
+          "email": _mybox.get(100),
+          "password": _mybox.get(110),
+        },options: new Options(contentType: "application/x-www-form-urlencoded"));
+
+    var success = response.data;
+    print(success);
+    
+    
+    if(!success?["error"]){
+    //  _showMyDialog();
+      return;
+    }
+    else if(success?["error"]){
+    // _showErrorDialog();
+    }
+   
+     
+    
+    
+   
+  }
+}}

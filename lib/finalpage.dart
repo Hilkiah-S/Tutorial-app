@@ -88,7 +88,7 @@ void dispose(){
       child: IconButton(
       icon: Icon(Icons.home),
       onPressed: () {
-       Navigator.pushReplacement(
+       Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => Choosepage(),
             )); 

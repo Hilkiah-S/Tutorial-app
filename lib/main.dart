@@ -14,12 +14,22 @@ import 'package:tutorialapp/register.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:tutorialapp/regularlogin.dart';
 
-
+import 'package:awesome_notifications/awesome_notifications.dart';
 
 void main()async{
-
-  await Hive.initFlutter();
   
+  await Hive.initFlutter();
+  await AwesomeNotifications().initialize(
+    null,
+    [
+      NotificationChannel(
+        channelKey: 'basic_channel', 
+        channelName: 'Berhane_Notifier', 
+        channelDescription: 'Berhane channel for displaying time sensetive information',
+        )
+    ],
+    debug: true,
+  );
   var box = Hive.openBox('dotBox');
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
