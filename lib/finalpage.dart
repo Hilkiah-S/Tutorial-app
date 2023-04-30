@@ -35,9 +35,9 @@ for (int j = 0; j < widget.answersinternet.length; j++) {
        });
     }
   }
-    print(newanswers[3].runtimeType);
+    
   print("New Useranswer");
-  print(widget.answersusers[3].runtimeType);
+  
 }
 
 

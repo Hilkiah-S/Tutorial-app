@@ -3,15 +3,15 @@ import 'dart:convert';
 import 'package:hive/hive.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import'package:tutorialapp/regulartest.dart';
-class InputcodeRR extends StatefulWidget {
-  const InputcodeRR({super.key});
+import 'package:tutorialapp/sightinternetquestions.dart';
+class BInputcodeSS extends StatefulWidget {
+  const BInputcodeSS({super.key});
 
   @override
-  State<InputcodeRR> createState() => _InputcodeState();
+  State<BInputcodeSS> createState() => _InputcodeStateSS();
 }
 
-class _InputcodeState extends State<InputcodeRR> {
+class _InputcodeStateSS extends State<BInputcodeSS> {
   final _mybox = Hive.box('dotBox');
   late List<Map<String, dynamic>> userData;
   late TextEditingController codetext;
@@ -92,14 +92,11 @@ codetext = TextEditingController();
                                         // ),
                                         child: Text("Submit",style:TextStyle(fontSize: 25,color:Colors.white,fontFamily: "Poppins",)),
                                         onPressed: isButtonActive?  (){print("LOGIN");
-                                        if(codetext.text.isNotEmpty){
-                                          if(_mybox.get(360)!=null&&_mybox.get(360).contains(codetext.text)){
-                                          _showErrorDialog();
-                                          }
-                                          else{
+                                        
+                                        
                                            _sendCode();   
-                                          }
-                                        }
+                                        
+                                        
                                         }:null,
                                         
                                         
@@ -129,10 +126,11 @@ codetext = TextEditingController();
   }
  void _sendCode() async{
     if(codetext.text.isNotEmpty){
+       
     Response<List> response =
         await Dio().post("https://berhan.addisphoenix.com/endpointquestions.php",data: {
           "courseid": codetext.text,
-          "email":_mybox.get(100),
+          
         },options: new Options(contentType: "application/x-www-form-urlencoded"));
 
  
@@ -141,12 +139,12 @@ codetext = TextEditingController();
     
     int? internettime = suns[0].timeall?.isEmpty == true ? null : int.tryParse(suns[0].timeall!);
      print(internettime);
-     _mybox.put(58,codetext.text);
-     Navigator.of(context).push(MaterialPageRoute(builder: (context) => InternetquestionSightRR(questions: suns,seconds: internettime!,)));
+      _mybox.put(57,codetext.text);
+     Navigator.of(context).push(MaterialPageRoute(builder: (context) => InternetquestionSight(questions: suns,seconds: internettime!,)));
    }
    
   }
-  Future<void> _showErrorDialog() async {
+   Future<void> _showErrorDialog() async {
   return showDialog<void>(
     context: context,
     barrierDismissible: false, // user must tap button!
@@ -174,6 +172,7 @@ codetext = TextEditingController();
   );
 }
 
+  
 
 }
 

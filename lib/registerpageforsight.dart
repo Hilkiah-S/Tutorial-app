@@ -8,7 +8,7 @@ import 'package:hive/hive.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:tutorialapp/debugpage.dart';
 import 'dart:convert';
-
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:tutorialapp/firstpageforsight.dart';
 
  class Regsight extends StatefulWidget {
@@ -82,10 +82,14 @@ late TextEditingController password;
   bool isButtonActive=true;
   // late TextEditingController password;
   // late TextEditingController emailtext;
+  FlutterTts flutterTts = FlutterTts();
    @override
 void initState(){
-
+    
     super.initState();
+        
+    flutterTts.setSpeechRate(0.4);
+    flutterTts.speak("Hello, you can login to your account with fingerprint,long press to use fingerprint");
     if(_mybox.get(70)!=null){
       setState(() {
         timefingerprint=true;
@@ -127,96 +131,62 @@ if(text1==true&&text2==true){
   Widget build(BuildContext context) {
     return Scaffold(
       
-      body: Stack(children: [
-        Container(
-          width: double.infinity,
-          height: double.infinity,  
-          decoration: BoxDecoration(
-            color: Colors.grey[800],
-          ),
-        ),
-        Center(
-        child:Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            
-            Padding(
-              padding: const EdgeInsets.only(left:20.0,right: 20.0,bottom:20,top: 10),
-              child: Container(
-                // height: 70,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  // border:Border.all(
-                  //  color: colortt,
-                  // ),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(25.0),
-                  ),
-                  
-                ),
-                child: TextFormField(
-                  controller: emailtext,
-                  decoration: new InputDecoration(
-   
-                    labelText: "Enter Email",
-                    fillColor: Colors.white,
-                    border: new OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(25.0),
-                      borderSide: new BorderSide(),
-                    ),
-                   
-                  ),
-                  validator: (val) {
-                    if (val?.length == 0) {
-                      return "Email cannot be empty";
-                    } else {
-                      return null;
-                    }
-                  },
-                  keyboardType: TextInputType.emailAddress,
-                  style: new TextStyle(
-                    fontFamily: "Poppins",
-                  ),
-                  
-                ),
-              ),
+      body: GestureDetector(
+        onLongPress: ()async{timefingerprint?
+          ()async {
+                 bool isAuthenticated = await authenticate();
+                  if(isAuthenticated){
+                    print("Verified");
+                   Navigator.of(context).push(MaterialPageRoute(builder: (context) => Firstsight()));
+                  }
+                  else{
+                    print("Not verified");
+                  }
+                 }: () {flutterTts.setSpeechRate(0.4);
+    flutterTts.speak("Looks like this is your firsttime loging in, you need to login with your login details atleast once, before you can use fingerprint");}; },
+        child: Stack(children: [
+          Container(
+            width: double.infinity,
+            height: double.infinity,  
+            decoration: BoxDecoration(
+              color: Colors.grey[800],
             ),
-            Padding(
-              padding: const EdgeInsets.only(left:20.0,right: 20.0,bottom:20,top: 10),
-              child: Container(
-                              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(25.0)
-                  ),),
-                child: TextFormField(
-                  controller: password,
-                  obscureText: !_passwordVisible ,
+          ),
+          Center(
+          child:Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              
+              Padding(
+                padding: const EdgeInsets.only(left:20.0,right: 20.0,bottom:20,top: 10),
+                child: Container(
+                  // height: 70,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    // border:Border.all(
+                    //  color: colortt,
+                    // ),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(25.0),
+                    ),
+                    
+                  ),
+                  child: TextFormField(
+                    controller: emailtext,
                     decoration: new InputDecoration(
-                      suffixIcon: IconButton(
-                            icon: Icon(
-                              // Based on passwordVisible state choose the icon
-                               _passwordVisible
-                               ? Icons.visibility
-                               : Icons.visibility_off,
-                               color: Color.fromARGB(255, 236, 112, 40),
-                               ), onPressed: () {
-                               // Update the state i.e. toogle the state of passwordVisible variable
-                               setState(() {
-                                   _passwordVisible = !_passwordVisible;
-                               });}),
-                      labelText: "password",
+         
+                      labelText: "Enter Email",
                       fillColor: Colors.white,
                       border: new OutlineInputBorder(
                         borderRadius: new BorderRadius.circular(25.0),
                         borderSide: new BorderSide(),
                       ),
-                      //fillColor: Colors.green
+                     
                     ),
                     validator: (val) {
                       if (val?.length == 0) {
-                        return "Name cannot be empty";
+                        return "Email cannot be empty";
                       } else {
                         return null;
                       }
@@ -225,88 +195,137 @@ if(text1==true&&text2==true){
                     style: new TextStyle(
                       fontFamily: "Poppins",
                     ),
+                    
                   ),
+                ),
               ),
-            ),
-             
-             SizedBox(height: 15),
-             Padding(
-                                   padding: const EdgeInsets.only(right:20),
-                                   child: Container(
-                                    height: 55,
-                                    width: 170,
-                                    decoration: BoxDecoration(
-                                      color: Color.fromARGB(255, 236, 112, 40),
-                                      borderRadius: BorderRadius.all(Radius.circular(90)) ),
-                                    child: TextButton(
-                                      // style: ButtonStyle(backgroundColor:MaterialStatePropertyAll(Color.fromARGB(255, 255, 150, 64)
-                                      // )
-                                      // ),
-                                      child: Text("Login",style:TextStyle(fontSize: 25,color:Colors.white,fontFamily: "Poppins",)),
-                                      onPressed: isButtonActive?  (){print("LOGIN");
-                                      _loginUser();
-                                      }:null,
-                                      
-                                      
-                                        // Email =email.text;
-                                        // Password=password.text;
-                                      // String newEmail = Email.replaceAll(new RegExp(r'[^\w\s]+'), '');
-                                                          // String compareemail= compareemail.replaceAll(new RegExp(r'[^\w\s]+'),
-                                    // String emailtrim = Email.trim();
-                                    //  String passwordtrim = Password.trim();
-                                    //   validator(newEmail.trim(),passwordtrim);},
-                                    ),
+              Padding(
+                padding: const EdgeInsets.only(left:20.0,right: 20.0,bottom:20,top: 10),
+                child: Container(
+                                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(25.0)
+                    ),),
+                  child: TextFormField(
+                    controller: password,
+                    obscureText: !_passwordVisible ,
+                      decoration: new InputDecoration(
+                        suffixIcon: IconButton(
+                              icon: Icon(
+                                // Based on passwordVisible state choose the icon
+                                 _passwordVisible
+                                 ? Icons.visibility
+                                 : Icons.visibility_off,
+                                 color: Color.fromARGB(255, 236, 112, 40),
+                                 ), onPressed: () {
+                                 // Update the state i.e. toogle the state of passwordVisible variable
+                                 setState(() {
+                                     _passwordVisible = !_passwordVisible;
+                                 });}),
+                        labelText: "password",
+                        fillColor: Colors.white,
+                        border: new OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(25.0),
+                          borderSide: new BorderSide(),
+                        ),
+                        //fillColor: Colors.green
+                      ),
+                      validator: (val) {
+                        if (val?.length == 0) {
+                          return "Name cannot be empty";
+                        } else {
+                          return null;
+                        }
+                      },
+                      keyboardType: TextInputType.emailAddress,
+                      style: new TextStyle(
+                        fontFamily: "Poppins",
+                      ),
+                    ),
+                ),
+              ),
+               
+               SizedBox(height: 15),
+               Padding(
+                                     padding: const EdgeInsets.only(right:20),
+                                     child: Container(
+                                      height: 55,
+                                      width: 170,
+                                      decoration: BoxDecoration(
+                                        color: Color.fromARGB(255, 236, 112, 40),
+                                        borderRadius: BorderRadius.all(Radius.circular(90)) ),
+                                      child: TextButton(
+                                        // style: ButtonStyle(backgroundColor:MaterialStatePropertyAll(Color.fromARGB(255, 255, 150, 64)
+                                        // )
+                                        // ),
+                                        child: Text("Login",style:TextStyle(fontSize: 25,color:Colors.white,fontFamily: "Poppins",)),
+                                        onPressed: isButtonActive?  (){print("LOGIN");
+                                        _loginUser();
+                                        }:null,
+                                        
+                                        
+                                          // Email =email.text;
+                                          // Password=password.text;
+                                        // String newEmail = Email.replaceAll(new RegExp(r'[^\w\s]+'), '');
+                                                            // String compareemail= compareemail.replaceAll(new RegExp(r'[^\w\s]+'),
+                                      // String emailtrim = Email.trim();
+                                      //  String passwordtrim = Password.trim();
+                                      //   validator(newEmail.trim(),passwordtrim);},
+                                      ),
+                                     ),
                                    ),
-                                 ),
-                                 
-                                 Padding(
-                                   padding: const EdgeInsets.only(right:50.0,top:20,bottom:20,left:50),
-                                   child: Row(children: <Widget>[
-                                        Expanded(
-            child: Divider(
-              height: 36,
-              thickness: 2,
-              color: Colors.white,
-            )
-        ),       
-
-        Padding(
-          padding: const EdgeInsets.only(left:8.0,right: 8),
-          child: Text("Or",style: TextStyle(color: Colors.white,fontSize: 17),),
-        ),        
-
-        Expanded(
-            child: Divider(
-              thickness: 2,
-              color: Colors.white,
-            )
-        ),
-                                   ],),
-                                 ),
-                                 Padding(
-               padding: const EdgeInsets.only(right:55.0),
-               child: IconButton(onPressed: timefingerprint? ()async {
-               bool isAuthenticated = await authenticate();
-                if(isAuthenticated){
-                  print("Verified");
-                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => Firstsight()));
-                }
-                else{
-                  print("Not verified");
-                }
-               }: null,
-  icon: Icon(Icons.fingerprint,size: 70,color: Color.fromARGB(255, 236, 112, 40),)),
-             ),
-             Container(
-              color: Color.fromARGB(255, 238, 180, 55),
-                
-             ),
-            
-          ],
-        ),
-        ),
-        
-      ],),
+                                   
+                                   Padding(
+                                     padding: const EdgeInsets.only(right:50.0,top:20,bottom:20,left:50),
+                                     child: Row(children: <Widget>[
+                                          Expanded(
+              child: Divider(
+                height: 36,
+                thickness: 2,
+                color: Colors.white,
+              )
+          ),       
+      
+          Padding(
+            padding: const EdgeInsets.only(left:8.0,right: 8),
+            child: Text("Or",style: TextStyle(color: Colors.white,fontSize: 17),),
+          ),        
+      
+          Expanded(
+              child: Divider(
+                thickness: 2,
+                color: Colors.white,
+              )
+          ),
+                                     ],),
+                                   ),
+                                   Padding(
+                 padding: const EdgeInsets.only(right:55.0),
+                 child: IconButton(onPressed:
+                  timefingerprint? ()async {
+                 bool isAuthenticated = await authenticate();
+                  if(isAuthenticated){
+                    print("Verified");
+                   Navigator.of(context).push(MaterialPageRoute(builder: (context) => Firstsight()));
+                  }
+                  else{
+                    print("Not verified");
+                  }
+                 }: null,
+        icon: Icon(Icons.fingerprint,size: 70,color: Color.fromARGB(255, 236, 112, 40),)),
+               ),
+               Container(
+                color: Color.fromARGB(255, 238, 180, 55),
+                  
+               ),
+              
+            ],
+          ),
+          ),
+          
+        ],),
+      ),
     );
   }
   

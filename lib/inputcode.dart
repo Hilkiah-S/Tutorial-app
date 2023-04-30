@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'package:hive/hive.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 import 'package:tutorialapp/sightinternetquestions.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 class Inputcode extends StatefulWidget {
   const Inputcode({super.key});
 
@@ -12,117 +14,134 @@ class Inputcode extends StatefulWidget {
 }
 
 class _InputcodeState extends State<Inputcode> {
+  FlutterTts flutterTts = FlutterTts();
+  late String spoken;
+  SpeechToText stt = SpeechToText();
   final _mybox = Hive.box('dotBox');
   late List<Map<String, dynamic>> userData;
   late TextEditingController codetext;
   bool isButtonActive = true;
-
+  bool Entered=false;
 @override
 void initState(){
     super.initState();
     
 codetext = TextEditingController();
-
+flutterTts.setSpeechRate(0.4);
+    flutterTts.speak("Please Enter the coursecode, by tapping and holding the screen");
 }
  int? internettime;
  List<Internet> suns=[];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    body:Container(
-      width:double.infinity,
-      height:double.infinity,
-      decoration:BoxDecoration(
-        color: Colors.grey[800],
-
-      ),
-      child:Padding(
-        padding: const EdgeInsets.only(top:150.0),
-        child: Center(
-          child:Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Container(
-                  
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(25.0),
-                    ),
-                  ),
-                  child: TextFormField(
-                        controller: codetext,
-                        decoration: new InputDecoration(
-   
-                          labelText: "Enter code",
-                          fillColor: Colors.white,
-                          border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(25.0),
-                            borderSide: new BorderSide(),
-                          ),
-                         
-                        ),
-                        validator: (val) {
-                          if (val?.length == 0) {
-                            return "Codecannot be empty";
-                          } else {
-                            return null;
-                          }
-                        },
-                        // keyboardType: TextInputType.emailAddress,
-                        style: new TextStyle(
-                          fontFamily: "Poppins",
-                        ),
-                        
-                      ),
-                ),
-              ),
-                               Padding(
-                                     padding: const EdgeInsets.only(right:20),
-                                     child: Container(
-                                      height: 55,
-                                      width: 250,
-                                      decoration: BoxDecoration(
-                                        color: Color.fromARGB(255, 236, 112, 40),
-                                        borderRadius: BorderRadius.all(Radius.circular(90)) ),
-                                      child: TextButton(
-                                        // style: ButtonStyle(backgroundColor:MaterialStatePropertyAll(Color.fromARGB(255, 255, 150, 64)
-                                        // )
-                                        // ),
-                                        child: Text("Submit",style:TextStyle(fontSize: 25,color:Colors.white,fontFamily: "Poppins",)),
-                                        onPressed: isButtonActive?  (){print("LOGIN");
-                                        if(codetext.text.isNotEmpty){
-                                          if(_mybox.get(360)!=null&&_mybox.get(360).contains(codetext.text)){
-                                          _showErrorDialog();
-                                          }
-                                          else{
-                                           _sendCode();   
-                                          }
-                                        }
-                                        
-                                        }:null,
-                                        
-                                        
-                                          // Email =email.text;
-                                          // Password=password.text;
-                                        // String newEmail = Email.replaceAll(new RegExp(r'[^\w\s]+'), '');
-                                                            // String compareemail= compareemail.replaceAll(new RegExp(r'[^\w\s]+'),
-                                      // String emailtrim = Email.trim();
-                                      //  String passwordtrim = Password.trim();
-                                      //   validator(newEmail.trim(),passwordtrim);},
-                                      ),
-                                     ),
-                                   ),
-                  
-                  
-                  
-                  ]
-                ),
-              ),
-      ),
-          
+    body:GestureDetector(
+      onTapDown: (details)async {
+         var avaliable = await stt.initialize();
+          if(avaliable){
+              stt.listen(
+                onResult: (result) {
+                  spoken = result.recognizedWords;
+                  setState(() {
+                    codetext.text=spoken;
+                  });
+                  setState(() {
+                    Entered=true;
+                  });
+                },
+              );
+          }
+      },
+      onTapUp:(details) {
+        stt.stop();
+        flutterTts.setSpeechRate(0.4);
+    flutterTts.speak("Your course code is ${codetext.text}");
+      },
+      onTap: Entered?(){flutterTts.setSpeechRate(0.4);
+    flutterTts.speak("Your course code is ${codetext.text}");}:null,
+    onDoubleTap: _sendCode,
+      child: Container(
+        width:double.infinity,
+        height:double.infinity,
+        decoration:BoxDecoration(
+          color: Colors.grey[800],
+    
         ),
+        child:Padding(
+          padding: const EdgeInsets.only(top:150.0),
+          child: Center(
+            child:Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Container(
+                    
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(25.0),
+                      ),
+                    ),
+                    child: TextFormField(
+                          controller: codetext,
+                          decoration: new InputDecoration(
+       
+                            labelText: "Enter code",
+                            fillColor: Colors.white,
+                            border: new OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(25.0),
+                              borderSide: new BorderSide(),
+                            ),
+                           
+                          ),
+                          validator: (val) {
+                            if (val?.length == 0) {
+                              return "Codecannot be empty";
+                            } else {
+                              return null;
+                            }
+                          },
+                          // keyboardType: TextInputType.emailAddress,
+                          style: new TextStyle(
+                            fontFamily: "Poppins",
+                          ),
+                          
+                        ),
+                  ),
+                ),
+                                  
+                                        // TextButton(
+                                        //   // style: ButtonStyle(backgroundColor:MaterialStatePropertyAll(Color.fromARGB(255, 255, 150, 64)
+                                        //   // )
+                                        //   // ),
+                                        //   child: Text("Submit",style:TextStyle(fontSize: 25,color:Colors.white,fontFamily: "Poppins",)),
+                                        //   onPressed: isButtonActive?  (){print("LOGIN");
+                                         
+                                        //      _sendCode();   
+                                          
+                                          
+                                        //   }:null,
+                                          
+                                          
+                                        //     // Email =email.text;
+                                        //     // Password=password.text;
+                                        //   // String newEmail = Email.replaceAll(new RegExp(r'[^\w\s]+'), '');
+                                        //                       // String compareemail= compareemail.replaceAll(new RegExp(r'[^\w\s]+'),
+                                        // // String emailtrim = Email.trim();
+                                        // //  String passwordtrim = Password.trim();
+                                        // //   validator(newEmail.trim(),passwordtrim);},
+                                        // ),
+                                     
+                    
+                    
+                    
+                    ]
+                  ),
+                ),
+        ),
+            
+          ),
+    ),
       );
     
 
@@ -134,7 +153,7 @@ codetext = TextEditingController();
     Response<List> response =
         await Dio().post("https://berhan.addisphoenix.com/endpointquestions.php",data: {
           "courseid": codetext.text,
-          
+          "email": _mybox.get(80),
         },options: new Options(contentType: "application/x-www-form-urlencoded"));
 
  
