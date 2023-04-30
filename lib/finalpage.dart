@@ -7,8 +7,8 @@ class FINALPAGE extends StatefulWidget {
    List answersinternet;
 
  List answersusers;
-
-FINALPAGE({Key? mykey,required this.answersinternet,required this.answersusers }):super(key:mykey);
+ int total;
+FINALPAGE({Key? mykey,required this.answersinternet,required this.answersusers,required this.total }):super(key:mykey);
 
   @override
   State<FINALPAGE> createState() => _FINALPAGEState();
@@ -45,16 +45,21 @@ for (int j = 0; j < widget.answersinternet.length; j++) {
 
 @override
 void initState(){
-compute();
-flutterTts.speak("You got ${correct} out of ${widget.answersinternet.length} ");
+_sendCode();
+flutterTts.speak("You got ${widget.total} out of ${widget.answersinternet.length} ");
 // _sendCode();
+}
+@override
+void dispose(){
+  flutterTts.stop();
+  super.dispose();
 }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: GestureDetector(
-        onTap: (){flutterTts.speak("You got ${correct} out of ${widget.answersinternet.length} ");_sendCode();},
+        onTap: (){flutterTts.speak("You got ${widget.total} out of ${widget.answersinternet.length} ");},
         child: Container(
           width: double.infinity,
           height: double.infinity,
@@ -63,7 +68,7 @@ flutterTts.speak("You got ${correct} out of ${widget.answersinternet.length} ");
           
           ) ,
         child: Center(
-          child: Text("You got ${correct}/${widget.answersinternet.length} ",style: TextStyle(color:Colors.white,fontSize: 40),),
+          child: Text("You got ${widget.total}/${widget.answersinternet.length} ",style: TextStyle(color:Colors.white,fontSize: 40),),
         ),
         ),
       ),
@@ -77,7 +82,7 @@ flutterTts.speak("You got ${correct} out of ${widget.answersinternet.length} ");
     Response<Map<String, dynamic>> response =
         await Dio().post("https://berhan.addisphoenix.com/finalscore.php",data: {
           "courseid":_mybox.get(57),
-          "score":correct,
+          "score":widget.total,
           "email": _mybox.get(80),
           "password": _mybox.get(90),
         },options: new Options(contentType: "application/x-www-form-urlencoded"));

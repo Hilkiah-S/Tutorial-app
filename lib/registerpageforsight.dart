@@ -127,6 +127,14 @@ if(text1==true&&text2==true){
   //   super.dispose();
   // }
   bool  _passwordVisible=false;
+
+
+@override
+void dispose(){
+  flutterTts.stop();
+  super.dispose();
+}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tutorialapp/finalpageforRegular.dart';
 import 'dart:async';
-
+import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import 'package:tutorialapp/pass.dart';
 class InternetquestionSightRR extends StatefulWidget {
   // const InternetquestionSight({super.key});
@@ -22,8 +22,12 @@ addanswers(){
     answers.add(widget.questions[i].answers);
   }
 }
+  Future<void> disableScreenshot() async {
+  await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
+}
   @override
   void initState() {
+    disableScreenshot();
     super.initState();
     _secondsRemaining = widget.seconds*60;
     _startTimer();
@@ -407,7 +411,7 @@ useranswers.add(0);
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextButton(
-              onPressed: () => Navigator.pop(context, true),
+              onPressed: () => Navigator.pop(context, false),
               child: Container(
                 width: 70,
                 decoration: BoxDecoration(
@@ -421,7 +425,7 @@ useranswers.add(0);
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Ok",style: TextStyle(color:Color.fromARGB(255, 242, 155, 40), fontSize: 20),),
+                    Text("OK",style: TextStyle(color:Color.fromARGB(255, 242, 155, 40), fontSize: 20),),
                   ],
                 )),
             ),

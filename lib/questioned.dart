@@ -159,6 +159,11 @@ class _ListeningState extends State<Listening> {
      
   }
    
+   @override
+void dispose(){
+  flutterTts.stop();
+  super.dispose();
+}
 
   previous(){
     useranswers.removeLast();

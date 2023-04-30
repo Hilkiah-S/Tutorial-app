@@ -5,6 +5,7 @@ import 'package:vibration/vibration.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 import 'package:tutorialapp/pass.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 class InternetquestionSight extends StatefulWidget {
   // const InternetquestionSight({super.key});
 
@@ -52,8 +53,12 @@ double gx = 0, gy = 0, gz = 0;
   }
   
   String anylarge = "Now that you are ready to answer,I am listening";
+  Future<void> disableScreenshot() async {
+  await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
+}
   @override
   void initState() {
+    disableScreenshot();
     setState(() {
       anylong = widget.questions[currentindex].question +
           "." +
@@ -82,6 +87,7 @@ double gx = 0, gy = 0, gz = 0;
   @override
   void dispose() {
     _timer.cancel();
+    flutterTts.stop();
     super.dispose();
   }
 
@@ -108,6 +114,30 @@ double gx = 0, gy = 0, gz = 0;
   static const maxSeconds = 60;
   int seconds = maxSeconds;
   // Timer? timer;
+  List newanswers=[];
+  int correct=0;
+  compute(){
+for (int j = 0; j < answers.length; j++) {
+  try {
+    newanswers.add(int.parse(answers[j]));
+  } catch (e) {
+    print("Error parsing ${answers[j]}: $e");
+  }
+}
+  for(int i=0;i<answers.length;i++){
+    if(newanswers[i]==useranswers[i]){
+       setState(() {
+         correct+=1;
+       });
+    }
+  }
+     Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => FINALPAGE(answersinternet:answers,answersusers: useranswers,total: correct,)),
+            ); 
+  print("New Useranswer");
+ 
+}
    next(){
        
      setState(() {
@@ -121,11 +151,10 @@ double gx = 0, gy = 0, gz = 0;
                       });
           
                    verify(useranswers, answers, questions.length);
-                 
-                               Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => FINALPAGE(answersinternet:answers,answersusers:useranswers)),
-          );}});
+                 compute();
+                              
+          }}
+          );
    }
   List<String> questions = [];
  
@@ -256,10 +285,8 @@ double gx = 0, gy = 0, gz = 0;
             
                      verify(useranswers, answers, questions.length);
                      flutterTts.stop();
-                                 Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => FINALPAGE(answersinternet:answers,answersusers: useranswers)),
-            );
+                     compute();
+                               
     
                       }
                     });

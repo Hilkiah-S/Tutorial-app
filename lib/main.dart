@@ -74,6 +74,11 @@ Do the following 10 questions, so you get a better hang of this.
     flutterTts.speak(long);
     super.initState();
   }
+  @override
+  void dispose(){
+    flutterTts.stop();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

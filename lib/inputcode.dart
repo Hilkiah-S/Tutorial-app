@@ -30,6 +30,11 @@ codetext = TextEditingController();
 flutterTts.setSpeechRate(0.4);
     flutterTts.speak("Please Enter the coursecode, by tapping and holding the screen");
 }
+@override
+void dispose(){
+  flutterTts.stop();
+  super.dispose();
+}
  int? internettime;
  List<Internet> suns=[];
   @override

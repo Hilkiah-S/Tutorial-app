@@ -15,6 +15,11 @@ Pass({Key? mykey,this.numberofquestions,this.total }):super(key:mykey);
    
    Speaking();
   }
+  @override
+void dispose(){
+  flutterTts.stop();
+  
+}
    FlutterTts flutterTts = FlutterTts();
     
   void Speaking(){
