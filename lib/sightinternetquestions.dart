@@ -28,6 +28,7 @@ addanswers(){
 String  lastanswer="none";
 double gx = 0, gy = 0, gz = 0;
   String anylong = "";
+  late String instructions="You have got $_secondsRemaining Minutes, to complete ${widget.questions.length} Questions,...Your time starts now, GoodLuck!";
   FlutterTts flutterTts = FlutterTts();
   void speakthewhole() {
     print(useranswers);
@@ -59,6 +60,7 @@ double gx = 0, gy = 0, gz = 0;
   @override
   void initState() {
     disableScreenshot();
+    
     setState(() {
       anylong = widget.questions[currentindex].question +
           "." +
@@ -75,11 +77,13 @@ double gx = 0, gy = 0, gz = 0;
           widget.questions[currentindex].choiced +
           ".";
     });
+    _secondsRemaining = widget.seconds*60;
     FlutterTts flutterTts = FlutterTts();
     flutterTts.setSpeechRate(0.4);
+   flutterTts.speak(instructions);
     flutterTts.speak(anylong);
     super.initState();
-    _secondsRemaining = widget.seconds*60;
+    
     _startTimer();
     addanswers();
   }
@@ -94,13 +98,29 @@ double gx = 0, gy = 0, gz = 0;
   void _startTimer() {
     const oneSec = Duration(seconds: 1);
     _timer = Timer.periodic(oneSec, (timer) {
-      setState(() {
+     
         if (_secondsRemaining < 1) {
+          if(useranswers.length==null){
+               for(int n=useranswers.length-1;n<answers.length-1;n++){
+useranswers.add(0);
+          }
+          }
+         if(useranswers.length<answers.length){
+          for(int n=useranswers.length-1;n<answers.length-1;n++){
+useranswers.add(0);
+          }
+          
+         }
+
+          compute();
           _timer.cancel();
+          
         } else {
-          _secondsRemaining = _secondsRemaining-1;
+          setState((){
+            _secondsRemaining = _secondsRemaining-1;
+          });
         }
-      });
+         
     });
   }
   

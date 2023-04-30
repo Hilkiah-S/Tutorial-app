@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:hive/hive.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:tutorialapp/firstpage.dart';
 class FINALPAGE extends StatefulWidget {
    List answersinternet;
 
@@ -57,21 +58,107 @@ void dispose(){
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: GestureDetector(
-        onTap: (){flutterTts.speak("You got ${widget.total} out of ${widget.answersinternet.length} ");},
-        child: Container(
-          width: double.infinity,
-          height: double.infinity,
-          decoration:BoxDecoration(
-            color: Colors.grey[900],
-          
-          ) ,
-        child: Center(
-          child: Text("You got ${widget.total}/${widget.answersinternet.length} ",style: TextStyle(color:Colors.white,fontSize: 40),),
-        ),
-        ),
+    return WillPopScope(
+      onWillPop: backIsPressed,
+      child: Scaffold(
+        body: GestureDetector(
+          onTap: (){
+          flutterTts.speak("You got ${widget.total} out of ${widget.answersinternet.length} ");
+          },
+          child: Container(
+            decoration:BoxDecoration(
+                  image:  DecorationImage(
+                  image: AssetImage("assets/splash/thumbs-up.jpg"),
+                  fit: BoxFit.cover,
+                ),
+                  color: Colors.grey[900],
+                  
+                ) ,
+            child: Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(40.0),
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child:Container(
+      decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(30),
       ),
+      child: IconButton(
+      icon: Icon(Icons.home),
+      onPressed: () {
+       Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => Choosepage(),
+            )); 
+      },
+      splashRadius: 20,
+      tooltip: 'Home',
+      iconSize: 40,
+      color: Colors.black,
+      ),
+    )
+    ),
+                ),
+                 Align(
+                  alignment: Alignment.bottomCenter,
+                   child: Padding(
+                     padding: const EdgeInsets.all(10.0),
+                     child: Container(
+                              height: 200,
+                              width:double.infinity,
+                               decoration: BoxDecoration(
+                      
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(40),
+                      ),
+                      color: Colors.white.withOpacity(0.8),
+                               ),
+                               child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(bottom:8.0),
+                            child: Icon(Icons.check_circle_outline,size: 40,color: Colors.green,),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(bottom:15.0),
+                            child: Text("You got ${widget.total}/${widget.answersinternet.length} ",style: TextStyle(color:Colors.black,fontSize: 40),),
+                          ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                           ElevatedButton(
+      style: ElevatedButton.styleFrom(
+      backgroundColor: Colors.green, // specify the background color
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(90), // specify the border radius
+      ),
+      minimumSize: Size(290, 40), // specify the minimum width and height of the button
+      ),
+      onPressed: () {
+       _sendCode();
+      },
+      child: Text('Complete',style: TextStyle(fontSize: 20),),
+    ),
+    
+    
+                              ],
+                            ),
+                        ],
+                      ),
+                               )),
+                   ),
+                 ),
+        
+       
+              ],
+            ),
+          ))
+          ),
     );
   }
   void _sendCode() async{
@@ -102,6 +189,9 @@ _showErrorDialog();
     
     
    
+  }
+  Future<bool>backIsPressed()async{
+   return false;
   }
   Future<void> _showMyDialog() async {
     

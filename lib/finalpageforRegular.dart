@@ -2,13 +2,14 @@ import'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:hive/hive.dart';
 import 'package:dio/dio.dart';
+import 'package:tutorialapp/firstpage.dart';
 // import 'package:flutter_tts/flutter_tts.dart';
 class FINALPAGERR extends StatefulWidget {
    List answersinternet;
 
  List answersusers;
 
-FINALPAGERR({Key? mykey,required this.answersinternet,required this.answersusers }):super(key:mykey);
+FINALPAGERR({Key? mykey,required this.answersinternet,required this.answersusers}):super(key:mykey);
 
   @override
   State<FINALPAGERR> createState() => _FINALPAGEState();
@@ -67,6 +68,31 @@ compute();
               ) ,
           child: Stack(
             children: [
+              Padding(
+                  padding: const EdgeInsets.all(40.0),
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child:Container(
+      decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(30),
+      ),
+      child: IconButton(
+      icon: Icon(Icons.home),
+      onPressed: () {
+        Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Choosepage(),
+            ));
+      },
+      splashRadius: 20,
+      tooltip: 'Home',
+      iconSize: 40,
+      color: Colors.black,
+      ),
+    )
+    ),
+                ),
                Align(
                 alignment: Alignment.bottomCenter,
                  child: Padding(
@@ -123,7 +149,8 @@ compute();
    
             ],
           ),
-        )));
+        ))
+        );
   }
   void _sendCode() async{
    print(correct);
