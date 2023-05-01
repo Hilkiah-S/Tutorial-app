@@ -67,9 +67,9 @@ late int secstoreturn;
       ),);
   }
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
+  void didChangeAppLifecycleState(AppLifecycleState state)async {
     if (state == AppLifecycleState.paused) {
-     backgroundcalled();
+    await backgroundcalled();
      const returnoneSec = Duration(seconds: 1);
     _returntimer = Timer.periodic(returnoneSec, (timer) {
 if (_returnsecondsRemaining == 0) {
@@ -101,23 +101,24 @@ useranswers.add(0);
 
     });
       print('App is in background!');
-    }
+    
+  }
    if (state == AppLifecycleState.resumed) {
     setState(() {
       _returnsecondsRemaining=15;
     });
     _returntimer.cancel();
     }
-     if (state == AppLifecycleState.detached) {
-     AwesomeNotifications().createNotification(content: NotificationContent(
-        id:12,
-        channelKey: 'basic_channel',
-        title: 'You have exited!',
-        body: ' your result so far will be sent to the Web',
-      ),);
-      compute();
-      _sendCode();
-      print('App is in background!');
+    if (state == AppLifecycleState.detached) {
+    //  AwesomeNotifications().createNotification(content: NotificationContent(
+    //     id:12,
+    //     channelKey: 'basic_channel',
+    //     title: 'You have exited!',
+    //     body: ' your result so far will be sent to the Web',
+    //   ),);
+      await compute();
+       _sendCode();
+      print('App is closed!');
     }
   }
   void _startTimer() {
