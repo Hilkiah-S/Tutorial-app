@@ -113,8 +113,10 @@ useranswers.add(0);
         id:12,
         channelKey: 'basic_channel',
         title: 'You have exited!',
-        body: ', your result so far will be sent to the Web',
+        body: ' your result so far will be sent to the Web',
       ),);
+      compute();
+      _sendCode();
       print('App is in background!');
     }
   }
@@ -529,7 +531,7 @@ for (int j = 0; j < answers.length; j++) {
        });
     }
   }
-    
+}
 
 void _sendCode() async{
    print(correct);
@@ -558,4 +560,4 @@ void _sendCode() async{
     
    
   }
-}}
+}
