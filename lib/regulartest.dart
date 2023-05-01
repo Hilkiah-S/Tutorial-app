@@ -20,7 +20,9 @@ class _InternetquestionSightState extends State<InternetquestionSightRR> with Wi
   int correct=0;
    final _mybox = Hive.box('dotBox');
 late int _secondsRemaining;
+int _returnsecondsRemaining=15;
   late Timer _timer;
+  late Timer _returntimer;
   List answers = [];
 addanswers(){
   for(int i=0;i<widget.questions.length;i++){
@@ -30,9 +32,10 @@ addanswers(){
   Future<void> disableScreenshot() async {
   await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
 }
-
+late int secstoreturn;
   @override
   void initState() {
+    secstoreturn = 15;
      AwesomeNotifications().isNotificationAllowed().then(
    (isAllowed){
     if(!isAllowed){
@@ -60,16 +63,52 @@ addanswers(){
         id:10,
         channelKey: 'basic_channel',
         title: 'You can not exit, in the middle of exam',
-        body: 'You have 15 secs to return',
+        body: 'You have $_returnsecondsRemaining secs to return',
       ),);
   }
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.paused) {
      backgroundcalled();
+     const returnoneSec = Duration(seconds: 1);
+    _returntimer = Timer.periodic(returnoneSec, (timer) {
+if (_returnsecondsRemaining == 0) {
+          if(useranswers.length==null){
+               for(int n=useranswers.length-1;n<answers.length-1;n++){
+useranswers.add(0);
+          }
+          }
+         if(useranswers.length<answers.length){
+          for(int n=useranswers.length-1;n<answers.length-1;n++){
+useranswers.add(0);
+          }
+          
+         }
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => FINALPAGERR(answersinternet:answers,answersusers:useranswers)),
+          );
+          _timer.cancel();
+          
+        } else {
+          setState((){
+            _returnsecondsRemaining = _returnsecondsRemaining-1;
+          });
+          backgroundcalled();
+        }
+
+
+    });
       print('App is in background!');
     }
-   if (state == AppLifecycleState.detached) {
+   if (state == AppLifecycleState.resumed) {
+    setState(() {
+      _returnsecondsRemaining=15;
+    });
+    _returntimer.cancel();
+    }
+     if (state == AppLifecycleState.detached) {
      AwesomeNotifications().createNotification(content: NotificationContent(
         id:12,
         channelKey: 'basic_channel',
