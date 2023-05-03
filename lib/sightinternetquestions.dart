@@ -16,9 +16,11 @@ class InternetquestionSight extends StatefulWidget {
   State<InternetquestionSight> createState() => _InternetquestionSightState();
 }
 
-class _InternetquestionSightState extends State<InternetquestionSight> {
+class _InternetquestionSightState extends State<InternetquestionSight> with WidgetsBindingObserver{
+  int minutestoreturn = 60;
 late int _secondsRemaining;
   late Timer _timer;
+  late Timer _remaintimer;
   List answers = [];
 addanswers(){
   for(int i=0;i<widget.questions.length;i++){
@@ -94,7 +96,21 @@ double gx = 0, gy = 0, gz = 0;
     flutterTts.stop();
     super.dispose();
   }
-
+  void ifout(){
+    const oneSecremain = Duration(seconds: 5);
+    _remaintimer = Timer.periodic(oneSecremain, (timer) {
+      ifout();
+      setState(() {
+        minutestoreturn-=5;
+      });
+    });
+   flutterTts.speak("You have exited, you need to return in $minutestoreturn seconds")
+  }
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state)async {
+    if (state == AppLifecycleState.paused) {
+     ifout;
+    }}
   void _startTimer() {
     const oneSec = Duration(seconds: 1);
     _timer = Timer.periodic(oneSec, (timer) {

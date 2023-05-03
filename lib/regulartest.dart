@@ -55,6 +55,7 @@ late int secstoreturn;
   @override
   void dispose() {
     _timer.cancel();
+    _returntimer.cancel();
      WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }

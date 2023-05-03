@@ -28,7 +28,7 @@ void initState(){
     
 codetext = TextEditingController();
 flutterTts.setSpeechRate(0.4);
-    flutterTts.speak("Please Enter the coursecode, by tapping and holding the screen");
+    flutterTts.speak("Please Enter the coursecode, by holding the screen");
 }
 @override
 void dispose(){
@@ -42,6 +42,7 @@ void dispose(){
     return Scaffold(
     body:GestureDetector(
       onTapDown: (details)async {
+        codetext.clear();
          var avaliable = await stt.initialize();
           if(avaliable){
               stt.listen(
