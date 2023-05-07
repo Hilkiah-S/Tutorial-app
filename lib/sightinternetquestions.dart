@@ -6,6 +6,7 @@ import 'package:sensors_plus/sensors_plus.dart';
 import 'package:tutorialapp/pass.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:flutter_windowmanager/flutter_windowmanager.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 class InternetquestionSight extends StatefulWidget {
   // const InternetquestionSight({super.key});
 
@@ -17,6 +18,8 @@ class InternetquestionSight extends StatefulWidget {
 }
 
 class _InternetquestionSightState extends State<InternetquestionSight> with WidgetsBindingObserver{
+   late Timer _returntimer;
+  int _returnsecondsRemaining=30;
   int minutestoreturn = 60;
 late int _secondsRemaining;
   late Timer _timer;
@@ -94,6 +97,10 @@ double gx = 0, gy = 0, gz = 0;
   void dispose() {
     _timer.cancel();
     flutterTts.stop();
+   
+    _returntimer.cancel();
+     WidgetsBinding.instance.removeObserver(this);
+    
     super.dispose();
   }
   void ifout(){
@@ -104,11 +111,20 @@ double gx = 0, gy = 0, gz = 0;
         minutestoreturn-=5;
       });
     });
-   flutterTts.speak("You have exited, you need to return in $minutestoreturn seconds")
+   flutterTts.speak("You have exited, you need to return in $minutestoreturn seconds");
+  }
+   backgroundcalled(){
+     AwesomeNotifications().createNotification(content: NotificationContent(
+        id:10,
+        channelKey: 'basic_channel',
+        title: 'You can not exit, in the middle of exam',
+        body: 'You have $_returnsecondsRemaining secs to return',
+      ),);
   }
   @override
   void didChangeAppLifecycleState(AppLifecycleState state)async {
     if (state == AppLifecycleState.paused) {
+      print("App is in background");
      ifout;
     }}
   void _startTimer() {
