@@ -224,16 +224,13 @@ void dispose(){
                     flutterTts.setSpeechRate(0.4);
                     flutterTts.speak(anylarge);
                     if (true) {
-               
-                      gyroscopeEvents.listen((GyroscopeEvent event) {
+                      accelerometerEvents.listen((AccelerometerEvent event){
                         setState(() {
-                          // gx = event.x;
-                          gy = event.y;
-                          gz = event.z;
+                          x=event.x;
+                          y=event.y;
                         });
-                      
-                        if (gz >= 2) {
-                          flutterTts.setSpeechRate(0.4);
+                        if(x>7){
+                           flutterTts.setSpeechRate(0.4);
                           flutterTts.speak("You Chose A");
                           Determiner = 1;
                           
@@ -242,8 +239,8 @@ void dispose(){
                             lastanswer="A";
                           });
                         }
-                        if (gz <= -2) {
-                          flutterTts.setSpeechRate(0.4);
+                        if(x<-7){
+                           flutterTts.setSpeechRate(0.4);
                           flutterTts.speak("You Chose B");
                           Determiner = 2;
                           
@@ -252,29 +249,78 @@ void dispose(){
                             lastanswer="B";
                           });
                         }
-                        if (gy < -4) {
-                          
-                            Vibration.vibrate();
-                          
-                          flutterTts.setSpeechRate(0.4);
+                        if(y>7){
+                           flutterTts.setSpeechRate(0.4);
                           flutterTts.speak("You Chose C");
                           Determiner = 3;
+                          
+                            Vibration.vibrate();
                           setState(() {
                             lastanswer="C";
                           });
-                        } 
-                        if (gy > 5) {
+                        }
+                         if(y<-5){
+                           flutterTts.setSpeechRate(0.4);
+                          flutterTts.speak("You Chose D");
+                          Determiner = 4;
                           
                             Vibration.vibrate();
-                          
-                          flutterTts.setSpeechRate(0.4);
-                          flutterTts.speak("You chose D");
-                           setState(() {
+                          setState(() {
                             lastanswer="D";
                           });
-                          Determiner = 4;
                         }
                       });
+                      // gyroscopeEvents.listen((GyroscopeEvent event) {
+                      //   setState(() {
+                      //     // gx = event.x;
+                      //     gy = event.y;
+                      //     gz = event.z;
+                      //   });
+                      
+                      //   if (gz >= 2) {
+                      //     flutterTts.setSpeechRate(0.4);
+                      //     flutterTts.speak("You Chose A");
+                      //     Determiner = 1;
+                          
+                      //       Vibration.vibrate();
+                      //     setState(() {
+                      //       lastanswer="A";
+                      //     });
+                      //   }
+                      //   if (gz <= -2) {
+                      //     flutterTts.setSpeechRate(0.4);
+                      //     flutterTts.speak("You Chose B");
+                      //     Determiner = 2;
+                          
+                      //       Vibration.vibrate();
+                      //     setState(() {
+                      //       lastanswer="B";
+                      //     });
+                      //   }
+                      //   if (gy < -4) {
+                          
+                      //       Vibration.vibrate();
+                          
+                      //     flutterTts.setSpeechRate(0.4);
+                      //     flutterTts.speak("You Chose C");
+                      //     Determiner = 3;
+                      //     setState(() {
+                      //       lastanswer="C";
+                      //     });
+                      //   } 
+                      //   if (gy > 5) {
+                          
+                      //       Vibration.vibrate();
+                          
+                      //     flutterTts.setSpeechRate(0.4);
+                      //     flutterTts.speak("You chose D");
+                      //      setState(() {
+                      //       lastanswer="D";
+                      //     });
+                      //     Determiner = 4;
+                      //   }
+                      // }
+                      // );
                     } else {
                       flutterTts.setSpeechRate(0.4);
                       flutterTts.speak("Please hold your phone still, first");

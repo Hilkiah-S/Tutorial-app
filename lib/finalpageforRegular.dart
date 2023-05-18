@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:hive/hive.dart';
 import 'package:dio/dio.dart';
 import 'package:tutorialapp/firstpage.dart';
+import 'package:tutorialapp/sidebar.dart';
 // import 'package:flutter_tts/flutter_tts.dart';
 class FINALPAGERR extends StatefulWidget {
    List answersinternet;
@@ -54,7 +55,40 @@ compute();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Theme(
+     
+  data: ThemeData(
+    iconTheme: IconThemeData(
+      color: Color.fromARGB(255, 236, 112, 40) // set the desired color here
+    ),
+  ),
+      child: Scaffold(
+        appBar: AppBar(
+         
+          iconTheme: IconThemeData(
+      color: Color.fromARGB(255, 236, 112, 40), // set the desired color here
+    ),
+    actions: [
+      ElevatedButton(
+         onPressed: () {
+           _mybox.delete(71);
+          Navigator.of(context).pop();
+         },
+         style: ElevatedButton.styleFrom(
+           backgroundColor: Colors.red,
+           shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+           ),
+         ),
+         child: Text('Logout'),
+       ),
+
+    ],
+          backgroundColor: Colors.grey[200],
+         
+        ),
+         drawer: NavBar(),
+        body:Scaffold(
       body: GestureDetector(
         onTap: (){_sendCode();},
         child: Container(
@@ -150,7 +184,7 @@ compute();
             ],
           ),
         ))
-        );
+        )));
   }
   void _sendCode() async{
    print(correct);

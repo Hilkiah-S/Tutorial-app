@@ -56,8 +56,9 @@ late int secstoreturn;
   void dispose() {
     _timer.cancel();
     _returntimer.cancel();
-     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+    
   }
   backgroundcalled(){
      AwesomeNotifications().createNotification(content: NotificationContent(
@@ -110,17 +111,7 @@ useranswers.add(0);
     });
     _returntimer.cancel();
     }
-    if (state == AppLifecycleState.detached) {
-    //  AwesomeNotifications().createNotification(content: NotificationContent(
-    //     id:12,
-    //     channelKey: 'basic_channel',
-    //     title: 'You have exited!',
-    //     body: ' your result so far will be sent to the Web',
-    //   ),);
-      await compute();
-       _sendCode();
-      print('App is closed!');
-    }
+    
   }
   void _startTimer() {
     const oneSec = Duration(seconds: 1);

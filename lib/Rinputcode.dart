@@ -4,6 +4,8 @@ import 'package:hive/hive.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import'package:tutorialapp/regulartest.dart';
+
+import 'package:tutorialapp/sidebar.dart';
 class InputcodeRR extends StatefulWidget {
   const InputcodeRR({super.key});
 
@@ -28,101 +30,134 @@ codetext = TextEditingController();
  List<Internet> suns=[];
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-    body:Container(
-      width:double.infinity,
-      height:double.infinity,
-      decoration:BoxDecoration(
-        color: Colors.grey[800],
+    return Theme(
+     
+  data: ThemeData(
+    iconTheme: IconThemeData(
+      color: Color.fromARGB(255, 236, 112, 40) // set the desired color here
+    ),
+  ),
+      child: Scaffold(
+        appBar: AppBar(
+         
+          iconTheme: IconThemeData(
+      color: Color.fromARGB(255, 236, 112, 40), // set the desired color here
+    ),
+    actions: [
+      ElevatedButton(
+         onPressed: () {
+           _mybox.delete(71);
+          Navigator.of(context).pop();
+         },
+         style: ElevatedButton.styleFrom(
+           backgroundColor: Colors.red,
+           shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+           ),
+         ),
+         child: Text('Logout'),
+       ),
 
-      ),
-      child:Padding(
-        padding: const EdgeInsets.only(top:150.0),
-        child: Center(
-          child:Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Container(
-                  
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(25.0),
-                    ),
-                  ),
-                  child: TextFormField(
-                        controller: codetext,
-                        decoration: new InputDecoration(
-   
-                          labelText: "Enter code",
-                          fillColor: Colors.white,
-                          border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(25.0),
-                            borderSide: new BorderSide(),
-                          ),
-                         
-                        ),
-                        validator: (val) {
-                          if (val?.length == 0) {
-                            return "Codecannot be empty";
-                          } else {
-                            return null;
-                          }
-                        },
-                        // keyboardType: TextInputType.emailAddress,
-                        style: new TextStyle(
-                          fontFamily: "Poppins",
-                        ),
-                        
-                      ),
-                ),
-              ),
-                               Padding(
-                                     padding: const EdgeInsets.only(right:20),
-                                     child: Container(
-                                      height: 55,
-                                      width: 250,
-                                      decoration: BoxDecoration(
-                                        color: Color.fromARGB(255, 236, 112, 40),
-                                        borderRadius: BorderRadius.all(Radius.circular(90)) ),
-                                      child: TextButton(
-                                        // style: ButtonStyle(backgroundColor:MaterialStatePropertyAll(Color.fromARGB(255, 255, 150, 64)
-                                        // )
-                                        // ),
-                                        child: Text("Submit",style:TextStyle(fontSize: 25,color:Colors.white,fontFamily: "Poppins",)),
-                                        onPressed: isButtonActive?  (){print("LOGIN");
-                                        if(codetext.text.isNotEmpty){
-                                          if(_mybox.get(360)!=null&&_mybox.get(360).contains(codetext.text)){
-                                          _showErrorDialog();
-                                          }
-                                          else{
-                                           _sendCode();   
-                                          }
-                                        }
-                                        }:null,
-                                        
-                                        
-                                          // Email =email.text;
-                                          // Password=password.text;
-                                        // String newEmail = Email.replaceAll(new RegExp(r'[^\w\s]+'), '');
-                                                            // String compareemail= compareemail.replaceAll(new RegExp(r'[^\w\s]+'),
-                                      // String emailtrim = Email.trim();
-                                      //  String passwordtrim = Password.trim();
-                                      //   validator(newEmail.trim(),passwordtrim);},
-                                      ),
-                                     ),
-                                   ),
-                  
-                  
-                  
-                  ]
-                ),
-              ),
-      ),
-          
+    ],
+          backgroundColor: Colors.grey[200],
+         
         ),
-      );
+         drawer: NavBar(),
+      body:Container(
+        width:double.infinity,
+        height:double.infinity,
+        decoration:BoxDecoration(
+          color: Color.fromARGB(255, 236, 235, 235),
+    
+        ),
+        child:Padding(
+          padding: const EdgeInsets.only(top:150.0),
+          child: Center(
+            child:Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Container(
+                    
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(25.0),
+                      ),
+                    ),
+                    child: TextFormField(
+                          controller: codetext,
+                          decoration: new InputDecoration(
+       
+                            labelText: "Enter code",
+                            fillColor: Colors.white,
+                            border: new OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(25.0),
+                              borderSide: new BorderSide(),
+                            ),
+                           
+                          ),
+                          validator: (val) {
+                            if (val?.length == 0) {
+                              return "Codecannot be empty";
+                            } else {
+                              return null;
+                            }
+                          },
+                          // keyboardType: TextInputType.emailAddress,
+                          style: new TextStyle(
+                            fontFamily: "Poppins",
+                          ),
+                          
+                        ),
+                  ),
+                ),
+                                 Padding(
+                                       padding: const EdgeInsets.only(right:20),
+                                       child: Container(
+                                        height: 55,
+                                        width: 250,
+                                        decoration: BoxDecoration(
+                                          color: Color.fromARGB(255, 236, 112, 40),
+                                          borderRadius: BorderRadius.all(Radius.circular(90)) ),
+                                        child: TextButton(
+                                          // style: ButtonStyle(backgroundColor:MaterialStatePropertyAll(Color.fromARGB(255, 255, 150, 64)
+                                          // )
+                                          // ),
+                                          child: Text("Submit",style:TextStyle(fontSize: 25,color:Colors.white,fontFamily: "Poppins",)),
+                                          onPressed: isButtonActive?  (){print("LOGIN");
+                                          if(codetext.text.isNotEmpty){
+                                            if(_mybox.get(360)!=null&&_mybox.get(360).contains(codetext.text)){
+                                            _showErrorDialog();
+                                            }
+                                            else{
+                                             _sendCode();   
+                                            }
+                                          }
+                                          }:null,
+                                          
+                                          
+                                            // Email =email.text;
+                                            // Password=password.text;
+                                          // String newEmail = Email.replaceAll(new RegExp(r'[^\w\s]+'), '');
+                                                              // String compareemail= compareemail.replaceAll(new RegExp(r'[^\w\s]+'),
+                                        // String emailtrim = Email.trim();
+                                        //  String passwordtrim = Password.trim();
+                                        //   validator(newEmail.trim(),passwordtrim);},
+                                        ),
+                                       ),
+                                     ),
+                    
+                    
+                    
+                    ]
+                  ),
+                ),
+        ),
+            
+          ),
+        ),
+    );
     
 
     

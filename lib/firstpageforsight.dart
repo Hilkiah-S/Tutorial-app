@@ -39,39 +39,43 @@ class _FirstsightState extends State<Firstsight> {
                 ),
                 child: Row(
                   children: [
-                    SizedBox(width: 20),
-                    Container(
-                      width: 140,
-                      height: 60,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                    
+                    Expanded(
+                      flex: 1,
+                      child: Container(
                         
-                        
-                          //              
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          
+                          
+                            //              
+                        ),
+                        child: TextButton(onPressed: (){
+                          Navigator.push(context,MaterialPageRoute(builder: (context)=>Inputcode()));
+                        }, child: Text("Start Exam",style: TextStyle(color: Colors.black,fontSize: 20),)),
                       ),
-                      child: TextButton(onPressed: (){
-                        Navigator.push(context,MaterialPageRoute(builder: (context)=>Inputcode()));
-                      }, child: Text("Start Exam",style: TextStyle(color: Colors.black,fontSize: 20),)),
                     ),
                     SizedBox(
                       width: 25,
                     ),
                      
-                     Container(
-                      width: 140,
-                      height: 60,
-                      decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 236, 112, 40),
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        // border: Border.all(
-                        //    color: Colors.white,
-                        // ),
-                      ),
-                      child: TextButton(onPressed: (){
-                        Navigator.push(context,MaterialPageRoute(builder: (context)=>Redirect()));
-                      }, child: Text("Practice Test",style: TextStyle(color: Colors.white,fontSize: 20),)),
-                    ),
+                     Expanded(
+                      flex: 1,
+                       child: Container(
+                        
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 236, 112, 40),
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          // border: Border.all(
+                          //    color: Colors.white,
+                          // ),
+                        ),
+                        child: TextButton(onPressed: (){
+                          Navigator.push(context,MaterialPageRoute(builder: (context)=>Redirect()));
+                        }, child: Text("Practice Test",style: TextStyle(color: Colors.white,fontSize: 20),)),
+                                         ),
+                     ),
             
                   ],
                 ),
@@ -81,23 +85,23 @@ class _FirstsightState extends State<Firstsight> {
 
 
         ),
-     Positioned (
-      left:240,
-      top:60,
-       child: ElevatedButton(
-       onPressed: () {
-         _mybox.delete(70);
-        Navigator.of(context).pop();
-       },
-       style: ElevatedButton.styleFrom(
-         backgroundColor: Colors.red,
-         shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-         ),
-       ),
-       child: Text('Logout'),
-     ),
-     ),
+    //  Positioned (
+    //   left:240,
+    //   top:60,
+    //    child: ElevatedButton(
+    //    onPressed: () {
+    //      _mybox.delete(70);
+    //     Navigator.of(context).pop();
+    //    },
+    //    style: ElevatedButton.styleFrom(
+    //      backgroundColor: Colors.red,
+    //      shape: RoundedRectangleBorder(
+    //     borderRadius: BorderRadius.circular(10),
+    //      ),
+    //    ),
+    //    child: Text('Logout'),
+    //  ),
+    //  ),
      Padding(
        padding: const EdgeInsets.only(left:15.0,right: 15.0,top:150),
        child: Positioned(

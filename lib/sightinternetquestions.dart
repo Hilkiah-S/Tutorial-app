@@ -100,9 +100,10 @@ double gx = 0, gy = 0, gz = 0;
    
     _returntimer.cancel();
      WidgetsBinding.instance.removeObserver(this);
-    
+    _gyroscopeSubscription.cancel();
     super.dispose();
   }
+  late StreamSubscription<GyroscopeEvent> _gyroscopeSubscription;
   void ifout(){
     const oneSecremain = Duration(seconds: 5);
     _remaintimer = Timer.periodic(oneSecremain, (timer) {
@@ -114,17 +115,14 @@ double gx = 0, gy = 0, gz = 0;
    flutterTts.speak("You have exited, you need to return in $minutestoreturn seconds");
   }
    backgroundcalled(){
-     AwesomeNotifications().createNotification(content: NotificationContent(
-        id:10,
-        channelKey: 'basic_channel',
-        title: 'You can not exit, in the middle of exam',
-        body: 'You have $_returnsecondsRemaining secs to return',
-      ),);
+    print("App is out");
+    flutterTts.speak("please return to the test");
   }
   @override
   void didChangeAppLifecycleState(AppLifecycleState state)async {
     if (state == AppLifecycleState.paused) {
       print("App is in background");
+      backgroundcalled();
      ifout;
     }}
   void _startTimer() {
@@ -248,7 +246,7 @@ for (int j = 0; j < answers.length; j++) {
                       flutterTts.speak(anylarge);
                       if (true) {
                  
-                        gyroscopeEvents.listen((GyroscopeEvent event) {
+                       _gyroscopeSubscription= gyroscopeEvents.listen((GyroscopeEvent event) {
                           setState(() {
                             // gx = event.x;
                             gy = event.y;

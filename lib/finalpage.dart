@@ -4,6 +4,7 @@ import 'package:hive/hive.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:tutorialapp/firstpage.dart';
+import 'package:tutorialapp/sidebarsight.dart';
 class FINALPAGE extends StatefulWidget {
    List answersinternet;
 
@@ -60,7 +61,40 @@ void dispose(){
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: backIsPressed,
+      child:Theme(
+     
+  data: ThemeData(
+    iconTheme: IconThemeData(
+      color: Color.fromARGB(255, 236, 112, 40) // set the desired color here
+    ),
+  ),
       child: Scaffold(
+        appBar: AppBar(
+         
+          iconTheme: IconThemeData(
+      color: Color.fromARGB(255, 236, 112, 40), // set the desired color here
+    ),
+    actions: [
+      ElevatedButton(
+         onPressed: () {
+           _mybox.delete(70);
+          Navigator.of(context).pop();
+         },
+         style: ElevatedButton.styleFrom(
+           backgroundColor: Colors.red,
+           shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+           ),
+         ),
+         child: Text('Logout'),
+       ),
+
+    ],
+          backgroundColor: Colors.grey[200],
+         
+        ),
+         drawer: NavBarSS(),
+        body: Scaffold(
         body: GestureDetector(
           onTap: (){
           flutterTts.speak("You got ${widget.total} out of ${widget.answersinternet.length} ");
@@ -159,7 +193,7 @@ void dispose(){
             ),
           ))
           ),
-    );
+    )));
   }
   void _sendCode() async{
    print(_mybox.get(57));
