@@ -6,11 +6,11 @@ import 'package:tutorialapp/firstpage.dart';
 import 'package:tutorialapp/sidebar.dart';
 // import 'package:flutter_tts/flutter_tts.dart';
 class FINALPAGERR extends StatefulWidget {
-   List answersinternet;
+  
+int numberinternet;
+ int answersusers;
 
- List answersusers;
-
-FINALPAGERR({Key? mykey,required this.answersinternet,required this.answersusers}):super(key:mykey);
+FINALPAGERR({Key? mykey, required this.answersusers,required this.numberinternet}):super(key:mykey);
 
   @override
   State<FINALPAGERR> createState() => _FINALPAGEState();
@@ -23,175 +23,178 @@ int numberofquestions=0;
 
 int correct=0;
 List newanswers=[];
-compute(){
-for (int j = 0; j < widget.answersinternet.length; j++) {
-  try {
-    newanswers.add(int.parse(widget.answersinternet[j]));
-  } catch (e) {
-    print("Error parsing ${widget.answersinternet[j]}: $e");
-  }
-}
-  for(int i=0;i<widget.answersinternet.length;i++){
-    if(newanswers[i]==widget.answersusers[i]){
-       setState(() {
-         correct+=1;
-       });
-    }
-  }
+// compute(){
+// for (int j = 0; j < widget.answersinternet.length; j++) {
+//   try {
+//     newanswers.add(int.parse(widget.answersinternet[j]));
+//   } catch (e) {
+//     print("Error parsing ${widget.answersinternet[j]}: $e");
+//   }
+// }
+//   for(int i=0;i<widget.answersinternet.length;i++){
+//     if(newanswers[i]==widget.answersusers[i]){
+//        setState(() {
+//          correct+=1;
+//        });
+//     }
+//   }
     
-  print("New Useranswer");
+//   print("New Useranswer");
  
-}
+// }
 
 
   
 
 @override
 void initState(){
-compute();
+// compute();
 // flutterTts.speak("You got ${correct} out of ${widget.answersinternet.length} ");
-// _sendCode();
+_sendCode();
 }
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-     
-  data: ThemeData(
-    iconTheme: IconThemeData(
-      color: Color.fromARGB(255, 236, 112, 40) // set the desired color here
-    ),
-  ),
-      child: Scaffold(
-        appBar: AppBar(
-         
-          iconTheme: IconThemeData(
-      color: Color.fromARGB(255, 236, 112, 40), // set the desired color here
-    ),
-    actions: [
-      ElevatedButton(
-         onPressed: () {
-           _mybox.delete(71);
-          Navigator.of(context).pop();
-         },
-         style: ElevatedButton.styleFrom(
-           backgroundColor: Colors.red,
-           shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
+    return WillPopScope(
+       onWillPop: backIsPressed,
+      child: Theme(
+       
+      data: ThemeData(
+      iconTheme: IconThemeData(
+        color: Color.fromARGB(255, 236, 112, 40) // set the desired color here
+      ),
+      ),
+        child: Scaffold(
+          appBar: AppBar(
+           
+            iconTheme: IconThemeData(
+        color: Color.fromARGB(255, 236, 112, 40), // set the desired color here
+      ),
+      actions: [
+        ElevatedButton(
+           onPressed: () {
+             _mybox.delete(71);
+            Navigator.of(context).pop();
+           },
+           style: ElevatedButton.styleFrom(
+             backgroundColor: Colors.red,
+             shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+             ),
            ),
+           child: Text('Logout'),
          ),
-         child: Text('Logout'),
-       ),
-
-    ],
-          backgroundColor: Colors.grey[200],
-         
-        ),
-         drawer: NavBar(),
-        body:Scaffold(
-      body: GestureDetector(
-        onTap: (){_sendCode();},
-        child: Container(
-          decoration:BoxDecoration(
-                image:  DecorationImage(
-                image: AssetImage("assets/splash/thumbs-up.jpg"),
-                fit: BoxFit.cover,
-              ),
-                color: Colors.grey[900],
-                
-              ) ,
-          child: Stack(
-            children: [
-              Padding(
-                  padding: const EdgeInsets.all(40.0),
-                  child: Align(
-                    alignment: Alignment.topRight,
-                    child:Container(
-      decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(30),
-      ),
-      child: IconButton(
-      icon: Icon(Icons.home),
-      onPressed: () {
-        Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Choosepage(),
-            ));
-      },
-      splashRadius: 20,
-      tooltip: 'Home',
-      iconSize: 40,
-      color: Colors.black,
-      ),
-    )
-    ),
-                ),
-               Align(
-                alignment: Alignment.bottomCenter,
-                 child: Padding(
-                   padding: const EdgeInsets.all(10.0),
-                   child: Container(
-                            height: 200,
-                            width:double.infinity,
-                             decoration: BoxDecoration(
-                    
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(40),
-                    ),
-                    color: Colors.white.withOpacity(0.8),
-                             ),
-                             child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(bottom:8.0),
-                          child: Icon(Icons.check_circle_outline,size: 40,color: Colors.green,),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom:15.0),
-                          child: Text("You got ${correct}/${widget.answersinternet.length} ",style: TextStyle(color:Colors.black,fontSize: 40),),
-                        ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                         ElevatedButton(
-  style: ElevatedButton.styleFrom(
-    backgroundColor: Colors.green, // specify the background color
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(90), // specify the border radius
-    ),
-    minimumSize: Size(290, 40), // specify the minimum width and height of the button
-  ),
-  onPressed: () {
-     _sendCode();
-  },
-  child: Text('Complete',style: TextStyle(fontSize: 20),),
-),
-
-
-                            ],
-                          ),
-                      ],
-                    ),
-                             )),
-                 ),
-               ),
-      
-   
-            ],
+    
+      ],
+            backgroundColor: Colors.grey[200],
+           
           ),
-        ))
-        )));
+           drawer: NavBar(),
+          body:Scaffold(
+        body: GestureDetector(
+          onTap: (){_sendCode();},
+          child: Container(
+            decoration:BoxDecoration(
+                  image:  DecorationImage(
+                  image: AssetImage("assets/splash/thumbs-up.jpg"),
+                  fit: BoxFit.cover,
+                ),
+                  color: Colors.grey[900],
+                  
+                ) ,
+            child: Stack(
+              children: [
+                Padding(
+                    padding: const EdgeInsets.all(40.0),
+                    child: Align(
+                      alignment: Alignment.topRight,
+                      child:Container(
+        decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(30),
+        ),
+        child: IconButton(
+        icon: Icon(Icons.home),
+        onPressed: () {
+          Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Choosepage(),
+              ));
+        },
+        splashRadius: 20,
+        tooltip: 'Home',
+        iconSize: 40,
+        color: Colors.black,
+        ),
+      )
+      ),
+                  ),
+                 Align(
+                  alignment: Alignment.bottomCenter,
+                   child: Padding(
+                     padding: const EdgeInsets.all(10.0),
+                     child: Container(
+                              height: 200,
+                              width:double.infinity,
+                               decoration: BoxDecoration(
+                      
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(40),
+                      ),
+                      color: Colors.white.withOpacity(0.8),
+                               ),
+                               child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(bottom:8.0),
+                            child: Icon(Icons.check_circle_outline,size: 40,color: Colors.green,),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(bottom:15.0),
+                            child: Text("You got ${widget.answersusers}/${widget.numberinternet} ",style: TextStyle(color:Colors.black,fontSize: 40),),
+                          ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                           ElevatedButton(
+      style: ElevatedButton.styleFrom(
+      backgroundColor: Colors.green, // specify the background color
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(90), // specify the border radius
+      ),
+      minimumSize: Size(290, 40), // specify the minimum width and height of the button
+      ),
+      onPressed: () {
+       _sendCode();
+      },
+      child: Text('Complete',style: TextStyle(fontSize: 20),),
+    ),
+    
+    
+                              ],
+                            ),
+                        ],
+                      ),
+                               )),
+                   ),
+                 ),
+        
+       
+              ],
+            ),
+          ))
+          ))),
+    );
   }
   void _sendCode() async{
    print(correct);
     Response<Map<String, dynamic>> response =
         await Dio().post("https://berhan.addisphoenix.com/finalscore.php",data: {
           "courseid":_mybox.get(58),
-          "score":correct,
+          "score":widget.answersusers,
           "email": _mybox.get(100),
           "password": _mybox.get(110),
         },options: new Options(contentType: "application/x-www-form-urlencoded"));
@@ -240,6 +243,9 @@ compute();
     },
   );
 }
+Future<bool>backIsPressed()async{
+   return false;
+  }
  Future<void> _showErrorDialog() async {
   return showDialog<void>(
     context: context,

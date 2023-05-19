@@ -2,12 +2,15 @@
 
 import 'package:flutter/material.dart';
 import'package:hive/hive.dart';
-import 'package:tutorialapp/Share.dart';
+
+import 'package:tutorialapp/Sightcontactus.dart';
 import 'package:tutorialapp/aboutus.dart';
 import 'package:tutorialapp/contactus.dart';
 import'package:hive/hive.dart';
 import 'package:tutorialapp/firstpage.dart';
 import 'package:tutorialapp/sidebar.dart';
+import 'package:tutorialapp/sightaboutus.dart';
+import 'package:tutorialapp/sightshare.dart';
 class NavBarSS extends StatelessWidget {
   final _mybox = Hive.box('dotBox');
   @override
@@ -50,7 +53,7 @@ class NavBarSS extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.share),
             title: Text('Share'),
-            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context)=>Sharen())),
+            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context)=>SightSharen())),
           ),
           ListTile(
             leading: Icon(Icons.notifications),
@@ -60,14 +63,14 @@ class NavBarSS extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.info),
             title: Text('About us'),
-            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context)=>Aboutus())),
+            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context)=>SightAboutus())),
           ),
           ListTile(
             leading: Icon(Icons.contacts),
             title: Text('Contact us'),
             onTap: () =>  Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => MyApp()),
+            MaterialPageRoute(builder: (context) => SightContact()),
           ),
           ),
           Divider(),

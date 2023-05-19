@@ -140,7 +140,7 @@ void dispose(){
     return Scaffold(
       
       body: GestureDetector(
-        onLongPress: ()async{timefingerprint?
+        onTap: ()async{timefingerprint?
           ()async {
                  bool isAuthenticated = await authenticate();
                   if(isAuthenticated){
@@ -157,7 +157,7 @@ void dispose(){
             width: double.infinity,
             height: double.infinity,  
             decoration: BoxDecoration(
-              color: Colors.grey[800],
+              color: Colors.grey[700],
             ),
           ),
           Center(
@@ -315,7 +315,7 @@ void dispose(){
                  bool isAuthenticated = await authenticate();
                   if(isAuthenticated){
                     print("Verified");
-                   Navigator.of(context).push(MaterialPageRoute(builder: (context) => Firstsight()));
+                   Navigator.of(context).push(MaterialPageRoute(builder: (context) => Debuding()));
                   }
                   else{
                     print("Not verified");

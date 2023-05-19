@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'dart:math';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_tts/flutter_tts.dart';
@@ -87,13 +87,16 @@ class _ListeningState extends State<Listening> {
   int totalcorrect=0;
   verify(user,right,total){
    for(int i=0;i<total;i++){
-      if(user[i]==right[i]){
+      if(user[i]==right[randomized[i]]){
        setState(() {
          totalcorrect+=1;
        });
       
       }
    }}
+  List indexes=[];
+  
+List indexescopy=[];
   List answers = [4, 2, 2, 4, 1, 1, 2, 4, 4, 3];
   List useranswers = [];
   int Determiner = 0;
@@ -109,19 +112,19 @@ class _ListeningState extends State<Listening> {
   void speakthewhole() {
     print(useranswers);
     setState(() {
-      anylong = questions[currentindex] +
+      anylong = questions[randomized[currentindex]] +
           "." +
           "   " "A.  " +
-          choose[c1] +
+          choose[randomized[currentindex]*4] +
           "." +
           " " "B.  " +
-          choose[c2] +
+          choose[randomized[currentindex]*4+1] +
           "." +
           "  " "C. " +
-          choose[c3] +
+          choose[randomized[currentindex]*4+2] +
           "." +
           "  " "D.  " +
-          choose[c4] +
+          choose[randomized[currentindex]*4+3] +
           ".";
     });
     FlutterTts flutterTts = FlutterTts();
@@ -130,25 +133,41 @@ class _ListeningState extends State<Listening> {
   }
   
   String anylarge = "Now that you are ready to answer,I am listening";
+  List randomized=[];
   @override
   void initState() {
+     for(int net=0;net<10;net++){
+     indexes.add(net);
+   }
+   indexescopy=List.from(indexes);
+    
+  var ran = Random();
+  while(indexescopy.isNotEmpty){
+    var enter = ran.nextInt(indexescopy.length);
+    randomized.add(indexescopy[enter]);
+    indexescopy.removeAt(enter);
+  }
+  print(indexes);
+  print(indexescopy);
+  print(randomized);
+
     () {
       Vibration.vibrate();
     };
     setState(() {
-      anylong = questions[currentindex] +
+      anylong = questions[randomized[currentindex]] +
           "." +
           "   " "A.  " +
-          choose[c1] +
+          choose[randomized[currentindex]*4] +
           "." +
           " " "B.  " +
-          choose[c2] +
+          choose[randomized[currentindex]*4+1] +
           "." +
           "  " "C. " +
-          choose[c3] +
+          choose[randomized[currentindex]*4+2] +
           "." +
           "  " "D.  " +
-          choose[c4] +
+          choose[randomized[currentindex]*4+3] +
           ".";
     });
     FlutterTts flutterTts = FlutterTts();
@@ -213,7 +232,7 @@ void dispose(){
             body: GestureDetector(
                 onTap: () {
                   speakthewhole();
-                  HapticFeedback.vibrate();
+                
                 },
                 onLongPress: () {
                  
@@ -224,61 +243,13 @@ void dispose(){
                     flutterTts.setSpeechRate(0.4);
                     flutterTts.speak(anylarge);
                     if (true) {
-                      accelerometerEvents.listen((AccelerometerEvent event){
-                        setState(() {
-                          x=event.x;
-                          y=event.y;
-                        });
-                        if(x>7){
-                           flutterTts.setSpeechRate(0.4);
-                          flutterTts.speak("You Chose A");
-                          Determiner = 1;
-                          
-                            Vibration.vibrate();
-                          setState(() {
-                            lastanswer="A";
-                          });
-                        }
-                        if(x<-7){
-                           flutterTts.setSpeechRate(0.4);
-                          flutterTts.speak("You Chose B");
-                          Determiner = 2;
-                          
-                            Vibration.vibrate();
-                          setState(() {
-                            lastanswer="B";
-                          });
-                        }
-                        if(y>7){
-                           flutterTts.setSpeechRate(0.4);
-                          flutterTts.speak("You Chose C");
-                          Determiner = 3;
-                          
-                            Vibration.vibrate();
-                          setState(() {
-                            lastanswer="C";
-                          });
-                        }
-                         if(y<-5){
-                           flutterTts.setSpeechRate(0.4);
-                          flutterTts.speak("You Chose D");
-                          Determiner = 4;
-                          
-                            Vibration.vibrate();
-                          setState(() {
-                            lastanswer="D";
-                          });
-                        }
-                      });
-                      // gyroscopeEvents.listen((GyroscopeEvent event) {
+                      // accelerometerEvents.listen((AccelerometerEvent event){
                       //   setState(() {
-                      //     // gx = event.x;
-                      //     gy = event.y;
-                      //     gz = event.z;
+                      //     x=event.x;
+                      //     y=event.y;
                       //   });
-                      
-                      //   if (gz >= 2) {
-                      //     flutterTts.setSpeechRate(0.4);
+                      //   if(x>7){
+                      //      flutterTts.setSpeechRate(0.4);
                       //     flutterTts.speak("You Chose A");
                       //     Determiner = 1;
                           
@@ -287,8 +258,8 @@ void dispose(){
                       //       lastanswer="A";
                       //     });
                       //   }
-                      //   if (gz <= -2) {
-                      //     flutterTts.setSpeechRate(0.4);
+                      //   if(x<-7){
+                      //      flutterTts.setSpeechRate(0.4);
                       //     flutterTts.speak("You Chose B");
                       //     Determiner = 2;
                           
@@ -297,30 +268,78 @@ void dispose(){
                       //       lastanswer="B";
                       //     });
                       //   }
-                      //   if (gy < -4) {
-                          
-                      //       Vibration.vibrate();
-                          
-                      //     flutterTts.setSpeechRate(0.4);
+                      //   if(y>7){
+                      //      flutterTts.setSpeechRate(0.4);
                       //     flutterTts.speak("You Chose C");
                       //     Determiner = 3;
+                          
+                      //       Vibration.vibrate();
                       //     setState(() {
                       //       lastanswer="C";
                       //     });
-                      //   } 
-                      //   if (gy > 5) {
+                      //   }
+                      //    if(y<-5){
+                      //      flutterTts.setSpeechRate(0.4);
+                      //     flutterTts.speak("You Chose D");
+                      //     Determiner = 4;
                           
                       //       Vibration.vibrate();
-                          
-                      //     flutterTts.setSpeechRate(0.4);
-                      //     flutterTts.speak("You chose D");
-                      //      setState(() {
+                      //     setState(() {
                       //       lastanswer="D";
                       //     });
-                      //     Determiner = 4;
                       //   }
-                      // }
-                      // );
+                      // });
+                      gyroscopeEvents.listen((GyroscopeEvent event) {
+                        setState(() {
+                          // gx = event.x;
+                          gy = event.y;
+                          gz = event.z;
+                        });
+                      
+                        if (gz >= 2) {
+                          flutterTts.setSpeechRate(0.4);
+                          flutterTts.speak("You Chose A");
+                          Determiner = 1;
+                          
+                            Vibration.vibrate();
+                          setState(() {
+                            lastanswer="A";
+                          });
+                        }
+                        if (gz <= -2) {
+                          flutterTts.setSpeechRate(0.4);
+                          flutterTts.speak("You Chose B");
+                          Determiner = 2;
+                          
+                            Vibration.vibrate();
+                          setState(() {
+                            lastanswer="B";
+                          });
+                        }
+                        if (gy < -4) {
+                          
+                            Vibration.vibrate();
+                          
+                          flutterTts.setSpeechRate(0.4);
+                          flutterTts.speak("You Chose C");
+                          Determiner = 3;
+                          setState(() {
+                            lastanswer="C";
+                          });
+                        } 
+                        if (gy > 5) {
+                          
+                            Vibration.vibrate();
+                          
+                          flutterTts.setSpeechRate(0.4);
+                          flutterTts.speak("You chose D");
+                           setState(() {
+                            lastanswer="D";
+                          });
+                          Determiner = 4;
+                        }
+                      }
+                      );
                     } else {
                       flutterTts.setSpeechRate(0.4);
                       flutterTts.speak("Please hold your phone still, first");
@@ -395,7 +414,7 @@ void dispose(){
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
-                              questions[currentindex],
+                              questions[randomized[currentindex]],
                               style: TextStyle(
                                   color: Color.fromARGB(255, 0, 0, 0),
                                   fontSize: 35,
@@ -410,7 +429,7 @@ void dispose(){
                               child: ElevatedButton(
                                 onPressed: () {},
                                 child: Text(
-                                  choose[c1],
+                                  choose[randomized[currentindex]*4],
                                   style: TextStyle(
                                       color: Color.fromARGB(255, 83, 80, 80),
                                       fontWeight: FontWeight.bold,
@@ -431,7 +450,7 @@ void dispose(){
                               child: ElevatedButton(
                                 onPressed: () {},
                                 child: Text(
-                                  choose[c2],
+                                  choose[randomized[currentindex]*4+1],
                                   style: TextStyle(
                                       color: Color.fromARGB(255, 83, 80, 80),
                                       fontWeight: FontWeight.bold,
@@ -457,7 +476,7 @@ void dispose(){
                                 
                                 },
                                 child: Text(
-                                  choose[c3],
+                                  choose[randomized[currentindex]*4+2],
                                   style: TextStyle(
                                       color: Color.fromARGB(255, 83, 80, 80),
                                       fontWeight: FontWeight.bold,
@@ -478,7 +497,7 @@ void dispose(){
                               child: ElevatedButton(
                                 onPressed: () {},
                                 child: Text(
-                                  choose[c4],
+                                  choose[randomized[currentindex]*4+3],
                                   style: TextStyle(
                                       color: Color.fromARGB(255, 83, 80, 80),
                                       fontWeight: FontWeight.bold,

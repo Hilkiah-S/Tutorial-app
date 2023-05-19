@@ -132,7 +132,7 @@ if(text1==true&&text2==true){
           width: double.infinity,
           height: double.infinity,  
           decoration: BoxDecoration(
-            color: Colors.grey[800],
+            color: Colors.grey[700],
           ),
         ),
         Center(
@@ -289,7 +289,7 @@ if(text1==true&&text2==true){
                bool isAuthenticated = await authenticate();
                 if(isAuthenticated){
                   print("Verified");
-                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => Firstsight()));
+                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => Startreg()));
                 }
                 else{
                   print("Not verified");

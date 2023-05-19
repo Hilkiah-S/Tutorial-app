@@ -7,6 +7,7 @@ import 'package:tutorialapp/pass.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'dart:math';
 class InternetquestionSight extends StatefulWidget {
   // const InternetquestionSight({super.key});
 
@@ -38,19 +39,19 @@ double gx = 0, gy = 0, gz = 0;
   void speakthewhole() {
     print(useranswers);
     setState(() {
-      anylong = widget.questions[currentindex].question +
+      anylong = widget.questions[randomized[currentindex]].question +
           "." +
           "   " "A.  " +
-          widget.questions[currentindex].choicea +
+          widget.questions[randomized[currentindex]].choicea +
           "." +
           " " "B.  " +
-          widget.questions[currentindex].choiceb+
+          widget.questions[randomized[currentindex]].choiceb+
           "." +
           "  " "C. " +
-          widget.questions[currentindex].choicec +
+          widget.questions[randomized[currentindex]].choicec +
           "." +
           "  " "D.  " +
-          widget.questions[currentindex].choiced+
+          widget.questions[randomized[currentindex]].choiced+
           ".";
     });
     FlutterTts flutterTts = FlutterTts();
@@ -62,24 +63,43 @@ double gx = 0, gy = 0, gz = 0;
   Future<void> disableScreenshot() async {
   await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
 }
+List indexes=[];
+List indexescopy=[];
+List randomized=[];
   @override
   void initState() {
+    addanswers();
+    for(int net=0;net<widget.questions.length;net++){
+     indexes.add(net);
+   }
+   indexescopy=List.from(indexes);
+    
+  var ran = Random();
+  while(indexescopy.isNotEmpty){
+    var enter = ran.nextInt(indexescopy.length);
+    randomized.add(indexescopy[enter]);
+    indexescopy.removeAt(enter);
+  }
+  print(indexes);
+  print(indexescopy);
+  print(randomized);
+
     disableScreenshot();
     
     setState(() {
-      anylong = widget.questions[currentindex].question +
+      anylong = widget.questions[randomized[currentindex]].question +
           "." +
           "   " "A.  " +
-          widget.questions[currentindex].choicea +
+          widget.questions[randomized[currentindex]].choicea +
           "." +
           " " "B.  " +
-          widget.questions[currentindex].choiceb  +
+          widget.questions[randomized[currentindex]].choiceb  +
           "." +
           "  " "C. " +
-          widget.questions[currentindex].choicec  +
+          widget.questions[randomized[currentindex]].choicec  +
           "." +
           "  " "D.  " +
-          widget.questions[currentindex].choiced +
+          widget.questions[randomized[currentindex]].choiced +
           ".";
     });
     _secondsRemaining = widget.seconds*60;
@@ -90,7 +110,7 @@ double gx = 0, gy = 0, gz = 0;
     super.initState();
     
     _startTimer();
-    addanswers();
+    
   }
 
   @override
@@ -175,7 +195,7 @@ for (int j = 0; j < answers.length; j++) {
   }
 }
   for(int i=0;i<answers.length;i++){
-    if(newanswers[i]==useranswers[i]){
+    if(newanswers[randomized[i]]==useranswers[i]){
        setState(() {
          correct+=1;
        });
@@ -194,13 +214,13 @@ for (int j = 0; j < answers.length; j++) {
                     if (currentindex < widget.questions.length-1) {
                       currentindex++;
                       
-                    } else if (currentindex == questions.length-1) {
+                    } else if (currentindex == widget.questions.length-1) {
                       setState(() {
                         currentindex = currentindex;
 
                       });
           
-                   verify(useranswers, answers, questions.length);
+                   verify(useranswers, answers, widget.questions.length);
                  compute();
                               
           }}
@@ -401,157 +421,159 @@ for (int j = 0; j < answers.length; j++) {
                                             color: Colors.white,
                                             borderRadius: BorderRadius.all(Radius.circular(30))
                                           ) ,
-                                          child: Column(
-                                           
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(top:15.0, left: 20,right: 10,bottom:20),
-                                                child: Text(
-                                                  widget.questions[currentindex].question,
-                                                  style: TextStyle(
-                                                      color: Color.fromARGB(255, 90, 89, 89),
-                                                      fontSize: 25,
-                                                      fontWeight: FontWeight.bold),
+                                          child: SingleChildScrollView(
+                                            child: Column(
+                                             
+                                              children: [
+                                                Padding(
+                                                  padding: const EdgeInsets.only(top:15.0, left: 20,right: 10,bottom:20),
+                                                  child: Text(
+                                                    widget.questions[randomized[currentindex]].question,
+                                                    style: TextStyle(
+                                                        color: Color.fromARGB(255, 90, 89, 89),
+                                                        fontSize: 25,
+                                                        fontWeight: FontWeight.bold),
+                                                  ),
                                                 ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(left:10,right: 10,top:10,bottom: 5),
-                                                child: Row(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: [
-                                                    Expanded(
-                                                      child: Container(
-                                                        decoration: BoxDecoration(
-                                                          color: Colors.white,
-                                                          border: Border.all(
-                                                            color:Colors.grey,
-                                                          ),
-                                                          borderRadius: BorderRadius.all(
-                                                            Radius.circular(
-                                                              30
+                                                Padding(
+                                                  padding: const EdgeInsets.only(left:10,right: 10,top:10,bottom: 5),
+                                                  child: Row(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: [
+                                                      Expanded(
+                                                        child: Container(
+                                                          decoration: BoxDecoration(
+                                                            color: Colors.white,
+                                                            border: Border.all(
+                                                              color:Colors.grey,
+                                                            ),
+                                                            borderRadius: BorderRadius.all(
+                                                              Radius.circular(
+                                                                30
+                                                              )
                                                             )
-                                                          )
-                                                        ),
-                                                        child: TextButton(
-                                                          onPressed: null,
-                                                          child: Text(
-                                                            widget.questions[currentindex].choicea,
-                                                            style: TextStyle(
-                                                                color: Color.fromARGB(255, 83, 80, 80),
-                                                                
-                                                                fontSize: 25),
                                                           ),
-                                                          
+                                                          child: TextButton(
+                                                            onPressed: null,
+                                                            child: Text(
+                                                              widget.questions[randomized[currentindex]].choicea,
+                                                              style: TextStyle(
+                                                                  color: Color.fromARGB(255, 83, 80, 80),
+                                                                  
+                                                                  fontSize: 25),
+                                                            ),
+                                                            
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  ],
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(left:10,right: 10,top:5,bottom: 5),
-                                                child: Row(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: [
-                                                    Expanded(
-                                                      child: Container(
-                                                        decoration: BoxDecoration(
-                                                          color: Colors.white,
-                                                          border: Border.all(
-                                                            color:Colors.grey,
-                                                          ),
-                                                          borderRadius: BorderRadius.all(
-                                                            Radius.circular(
-                                                              30
+                                                Padding(
+                                                  padding: const EdgeInsets.only(left:10,right: 10,top:5,bottom: 5),
+                                                  child: Row(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: [
+                                                      Expanded(
+                                                        child: Container(
+                                                          decoration: BoxDecoration(
+                                                            color: Colors.white,
+                                                            border: Border.all(
+                                                              color:Colors.grey,
+                                                            ),
+                                                            borderRadius: BorderRadius.all(
+                                                              Radius.circular(
+                                                                30
+                                                              )
                                                             )
-                                                          )
-                                                        ),
-                                                        child: TextButton(
-                                                          onPressed: null,
-                                                          child: Text(
-                                                             widget.questions[currentindex].choiceb,
-                                                            style: TextStyle(
-                                                                color: Color.fromARGB(255, 83, 80, 80),
-                                                                
-                                                                fontSize: 25),
                                                           ),
-                                                          
+                                                          child: TextButton(
+                                                            onPressed: null,
+                                                            child: Text(
+                                                               widget.questions[randomized[currentindex]].choiceb,
+                                                              style: TextStyle(
+                                                                  color: Color.fromARGB(255, 83, 80, 80),
+                                                                  
+                                                                  fontSize: 25),
+                                                            ),
+                                                            
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  ],
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
-                                             Padding(
-                                                padding: const EdgeInsets.only(left:10,right: 10,top:5,bottom: 5),
-                                                child: Row(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: [
-                                                    Expanded(
-                                                      child: Container(
-                                                        decoration: BoxDecoration(
-                                                          color: Colors.white,
-                                                          border: Border.all(
-                                                            color:Colors.grey,
-                                                          ),
-                                                          borderRadius: BorderRadius.all(
-                                                            Radius.circular(
-                                                              30
+                                               Padding(
+                                                  padding: const EdgeInsets.only(left:10,right: 10,top:5,bottom: 5),
+                                                  child: Row(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: [
+                                                      Expanded(
+                                                        child: Container(
+                                                          decoration: BoxDecoration(
+                                                            color: Colors.white,
+                                                            border: Border.all(
+                                                              color:Colors.grey,
+                                                            ),
+                                                            borderRadius: BorderRadius.all(
+                                                              Radius.circular(
+                                                                30
+                                                              )
                                                             )
-                                                          )
-                                                        ),
-                                                        child: TextButton(
-                                                          onPressed: null,
-                                                          child: Text(
-                                                            widget.questions[currentindex].choicec,
-                                                            style: TextStyle(
-                                                                color: Color.fromARGB(255, 83, 80, 80),
-                                                                
-                                                                fontSize: 25),
                                                           ),
-                                                          
+                                                          child: TextButton(
+                                                            onPressed: null,
+                                                            child: Text(
+                                                              widget.questions[randomized[currentindex]].choicec,
+                                                              style: TextStyle(
+                                                                  color: Color.fromARGB(255, 83, 80, 80),
+                                                                  
+                                                                  fontSize: 25),
+                                                            ),
+                                                            
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  ],
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(left:10,right: 10,top:5,bottom: 5),
-                                                child: Row(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: [
-                                                    Expanded(
-                                                      child: Container(
-                                                        decoration: BoxDecoration(
-                                                          color: Colors.white,
-                                                          border: Border.all(
-                                                            color:Colors.grey,
-                                                          ),
-                                                          borderRadius: BorderRadius.all(
-                                                            Radius.circular(
-                                                              30
+                                                Padding(
+                                                  padding: const EdgeInsets.only(left:10,right: 10,top:5,bottom: 5),
+                                                  child: Row(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: [
+                                                      Expanded(
+                                                        child: Container(
+                                                          decoration: BoxDecoration(
+                                                            color: Colors.white,
+                                                            border: Border.all(
+                                                              color:Colors.grey,
+                                                            ),
+                                                            borderRadius: BorderRadius.all(
+                                                              Radius.circular(
+                                                                30
+                                                              )
                                                             )
-                                                          )
-                                                        ),
-                                                        child: TextButton(
-                                                          onPressed: null,
-                                                          
-                                                          child: Text(
-                                                             widget.questions[currentindex].choiced,
-                                                            style: TextStyle(
-                                                                color: Color.fromARGB(255, 83, 80, 80),
-                                                                
-                                                                fontSize: 25),
                                                           ),
-                                                          
+                                                          child: TextButton(
+                                                            onPressed: null,
+                                                            
+                                                            child: Text(
+                                                               widget.questions[randomized[currentindex]].choiced,
+                                                              style: TextStyle(
+                                                                  color: Color.fromARGB(255, 83, 80, 80),
+                                                                  
+                                                                  fontSize: 25),
+                                                            ),
+                                                            
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  ],
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ), 
