@@ -132,7 +132,7 @@ class CircularParticleScreen extends StatelessWidget {
                                   ),
                                   SizedBox(height: 16.0),
                                   Text(
-                                    "Kelkias. S",
+                                    "Dawit .M",
                                     style: TextStyle(
                                       fontSize: 17.0,
                                       fontWeight: FontWeight.bold,
@@ -140,7 +140,7 @@ class CircularParticleScreen extends StatelessWidget {
                                   ),
                                   SizedBox(height: 8.0),
                                   Text(
-                                    "kelkiasselamu@yahoo.com",
+                                    "dawitm777@gmail.com",
                                     style: TextStyle(fontSize: 14.0),
                                   ),
                                   SizedBox(height: 8.0),
@@ -167,7 +167,7 @@ class CircularParticleScreen extends StatelessWidget {
                                   ),
                                   SizedBox(height: 16.0),
                                   Text(
-                                    "Dawit .M",
+                                    "Eman .S",
                                     style: TextStyle(
                                       fontSize: 17.0,
                                       fontWeight: FontWeight.bold,
@@ -175,7 +175,7 @@ class CircularParticleScreen extends StatelessWidget {
                                   ),
                                   SizedBox(height: 8.0),
                                   Text(
-                                    "dawitm777@gmail.com",
+                                    "emanmohammedseid@gmail.com",
                                     style: TextStyle(fontSize: 14.0),
                                   ),
                                   SizedBox(height: 8.0),
@@ -246,7 +246,7 @@ class CircularParticleScreen extends StatelessWidget {
                                   ),
                                   SizedBox(height: 16.0),
                                   Text(
-                                    "Eman .S",
+                                    "Kelkias .S",
                                     style: TextStyle(
                                       fontSize: 17.0,
                                       fontWeight: FontWeight.bold,
@@ -254,7 +254,7 @@ class CircularParticleScreen extends StatelessWidget {
                                   ),
                                   SizedBox(height: 8.0),
                                   Text(
-                                    "emanmohammedseid@gmail.com",
+                                    "kelkiasselamu@yahoo.com",
                                     style: TextStyle(fontSize: 14.0),
                                   ),
                                   SizedBox(height: 8.0),

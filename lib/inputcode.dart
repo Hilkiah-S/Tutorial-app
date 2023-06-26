@@ -32,7 +32,7 @@ void initState(){
     
 codetext = TextEditingController();
 flutterTts.setSpeechRate(0.4);
-    flutterTts.speak("Please Enter the coursecode, by holding the screen");
+    flutterTts.speak("You are now on your way to the Intenet Exam, this the the part of the page where you enter the coursecode that was assigned for this exam, you just need to hold anywhere on the screen and say the course code, or it can be typed manually by a gaurdian, when I repeat the course code you entered and you find it acceptable then you can doubletap to start the exam");
 }
 @override
 void dispose(){
@@ -79,6 +79,7 @@ void dispose(){
         body:Scaffold(
     body:GestureDetector(
       onTapDown: (details)async {
+        flutterTts.stop();
         codetext.clear();
         setState(() {
           miccolor=miccolored;

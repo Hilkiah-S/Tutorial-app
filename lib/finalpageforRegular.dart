@@ -17,6 +17,7 @@ FINALPAGERR({Key? mykey, required this.answersusers,required this.numberinternet
 }
 
 class _FINALPAGEState extends State<FINALPAGERR> {
+  late String result;
   late List codestaken;
    final _mybox = Hive.box('dotBox');
 int numberofquestions=0;
@@ -50,6 +51,7 @@ List newanswers=[];
 void initState(){
 // compute();
 // flutterTts.speak("You got ${correct} out of ${widget.answersinternet.length} ");
+result=widget.answersusers.toString();
 _sendCode();
 }
 
@@ -92,7 +94,10 @@ _sendCode();
            drawer: NavBar(),
           body:Scaffold(
         body: GestureDetector(
-          onTap: (){_sendCode();},
+          onTap: (){
+            print(result.runtimeType);
+            print(result);
+            _sendCode();},
           child: Container(
             decoration:BoxDecoration(
                   image:  DecorationImage(
@@ -194,7 +199,7 @@ _sendCode();
     Response<Map<String, dynamic>> response =
         await Dio().post("https://berhan.addisphoenix.com/finalscore.php",data: {
           "courseid":_mybox.get(58),
-          "score":widget.answersusers,
+          "score":result,
           "email": _mybox.get(100),
           "password": _mybox.get(110),
         },options: new Options(contentType: "application/x-www-form-urlencoded"));

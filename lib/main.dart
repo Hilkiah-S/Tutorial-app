@@ -56,10 +56,10 @@ class Redirect extends StatefulWidget {
 }
 
 class _RedirectState extends State<Redirect> {
-  String long =''' Hello, I am here to give you instructions how to proceed, I will read the following questions out  loud ,Including the corresponding choices, after hearing the question if you are ready to answer, long press anywhere on the screen , for next question double tap the screen, to give an answer first hold your phone in the Stable position preferably, upright position , try to make it as still as possible, then long press on the screen to give an answer, now comes the most important part. Turn your phone to the left if the answer is A,
-Turn you phone to the left if the answer is B, rotate your phone in the clockwise direction if the answer is C and finally rotate your phone in the anti-clockwise direction, if the answer is D, I must note, we use your phone's acceleration  to get the value needed, which means the faster you turn your phone the easier it is for us to detect. whenever you are choosing an answer by rotating your phone when you feel the vibration from your phone, that mean we got the value we wanted and Now you can release the long press, and continue to the next question by double tapping, if you double tap without setting an answer, we are going to assume that you skipped the question, which may reflect badly in your evaluation. If you skipped the page by accident you can go to the previous question by swiping to the right.
+  String long =''' Welcome to the practice test, I am here to give you instructions how to proceed, I will read the following questions out loud ,Including the corresponding choices, after hearing the question if you are ready to answer, long press anywhere on the screen , for next question double tap the screen, to give an answer first hold your phone in the Stable position preferably, upright position , try to make it as still as possible, then long press on the screen to give an answer, now comes the most important part. Turn your phone to the left if the answer is A,
+turn you phone to the right if the answer is B, rotate your phone in the clockwise direction if the answer is C and finally rotate your phone in the anti-clockwise direction, if the answer is D, I must note, we use your phone's acceleration  to get the value needed, which means the faster you turn your phone the easier it is for us to detect. whenever you are choosing an answer by rotating your phone if you feel the vibration from your phone, that means we got the value we wanted and Now you can release the long press, and continue to the next question by double tapping, if you double tap without setting an answer, we are going to assume that you skipped the question, which may reflect badly in your evaluation. If you skipped the page by accident you can go to the previous question by swiping to the right.
  If in fact you chose the wrong answer by accident you can resubmit an answer with a long press and setting the new value as did before, to hear this again Single tap, to proceed to next page Double tap,
-Do the following 10 questions, so you get a better hang of this.
+Do the following 10 questions, so you get a better hang of this..you can navigate back to any screen by swiping to the right.
 ''';
   FlutterTts flutterTts = FlutterTts();
 // () {Vibration.vibrate();},
@@ -94,6 +94,10 @@ Do the following 10 questions, so you get a better hang of this.
   Widget build(BuildContext context) {
     return Scaffold(
       body: GestureDetector(
+         onHorizontalDragEnd: (DragEndDetails details) {
+    if (details.velocity.pixelsPerSecond.dx > 0) {
+        Navigator.pop(context);
+    };},
         onTap: again,
         onDoubleTap: () {
           Navigator.push(

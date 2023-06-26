@@ -10,6 +10,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   @override
   void initState(){
+    
     _passwordVisible=false;
   }
   bool  _passwordVisible=false;

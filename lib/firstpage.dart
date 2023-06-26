@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tutorialapp/modregularlogin.dart';
 import 'package:tutorialapp/registerpageforsight.dart';
 import 'package:tutorialapp/regularlogin.dart';
-
+import 'package:flutter_tts/flutter_tts.dart';
 class Choosepage extends StatefulWidget {
   const Choosepage({super.key});
 
@@ -11,15 +11,27 @@ class Choosepage extends StatefulWidget {
 }
 
 class _ChoosepageState extends State<Choosepage> {
-   
-  
+   FlutterTts flutterTts = FlutterTts();
+    
+  @override 
+  void initState(){
+    flutterTts.setSpeechRate(0.4);
+    flutterTts.speak("Selam, Welcome to Berhan,......this is the first Page, you can Navigate to our special sections page by swiping to the left, or continue as regular by swiping to the right ");
+  }
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: backIsPressed,
       child: Scaffold(
         body: GestureDetector(
-          onLongPress: (){ Navigator.of(context).push(MaterialPageRoute(builder:(context)=>Regsight())); },
+            onHorizontalDragEnd: (DragEndDetails details) {
+    if (details.velocity.pixelsPerSecond.dx > 0) {
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>Regregular()));
+    };
+     if (details.velocity.pixelsPerSecond.dx < 0) {
+       Navigator.of(context).push(MaterialPageRoute(builder:(context)=>Regsight()));
+    };
+    },
           child: Column(
             children: [
               Expanded(
@@ -71,8 +83,9 @@ class _ChoosepageState extends State<Choosepage> {
                                         
                                           child: Padding(
                                             padding: const EdgeInsets.only(left:50.0,right: 50,top: 10,bottom:5),
-                                            child: ElevatedButton(onPressed: (){
-                                              Navigator.push(context, MaterialPageRoute(builder: (context)=>Regregular()));
+                                            child: ElevatedButton(onPressed: 
+                                            (){
+                                          
                                             }, child: Text("Regular Student",style: TextStyle(fontSize: 23,color: Colors.black),),style:ElevatedButton.styleFrom(
                                               
                                               backgroundColor: Color.fromARGB(255, 221, 220, 220),
@@ -96,9 +109,7 @@ class _ChoosepageState extends State<Choosepage> {
                                                 height: 90,
                                                 child: Padding(
                                                   padding: const EdgeInsets.only(left:50,right: 50,top: 5),
-                                                  child: ElevatedButton(onPressed: (){
-                                                    Navigator.of(context).push(MaterialPageRoute(builder:(context)=>Regsight()));
-                                                  }, child: Padding(
+                                                  child: ElevatedButton(onPressed: (){}, child: Padding(
                                                     padding: const EdgeInsets.all(4.0),
                                                     child: Text("Special Student",style: TextStyle(fontSize: 23,color: Colors.white),),
                                                   ),style:ElevatedButton.styleFrom(

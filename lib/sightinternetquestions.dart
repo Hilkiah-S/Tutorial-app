@@ -19,6 +19,9 @@ class InternetquestionSight extends StatefulWidget {
 }
 
 class _InternetquestionSightState extends State<InternetquestionSight> with WidgetsBindingObserver{
+
+   ScrollController _scrollController = ScrollController();
+ late bool firsttime;
    late Timer _returntimer;
   int _returnsecondsRemaining=30;
   int minutestoreturn = 60;
@@ -26,32 +29,88 @@ late int _secondsRemaining;
   late Timer _timer;
   late Timer _remaintimer;
   List answers = [];
+  Color selectedColor =Color.fromARGB(255, 41, 243, 48);
+  Color aColor =Colors.grey;
+  Color bColor =Colors.grey;
+  Color cColor =Colors.grey;
+  Color dColor =Colors.grey;
+  Color unselected=Colors.grey;
 addanswers(){
   for(int i=0;i<widget.questions.length;i++){
     answers.add(widget.questions[i].answers);
   }
 }
+addblankanswers(){
+  for(int i=0;i<widget.questions.length;i++){
+    useranswers.add(0);
+  }
+}
+mixcolors(){
+  print(useranswers);
+  print(useranswers[currentindex]);
+  print(currentindex);
+  print("Mix called");
+  if(useranswers[currentindex]==0){print(" none selected");
+    setState(() {
+     aColor=unselected;
+     bColor=unselected;
+     cColor=unselected;
+     dColor=unselected;
+   });}
+    if(useranswers[currentindex]==1){print("a selected");
+    setState(() {
+     aColor=selectedColor;
+     bColor=unselected;
+     cColor=unselected;
+     dColor=unselected;
+   });}
+   if(useranswers[currentindex]==2){
+    print("b selected");
+    setState(() {
+     bColor=selectedColor;
+     aColor=unselected;
+     cColor=unselected;
+     dColor=unselected;
+   });}
+   if(useranswers[currentindex]==3){
+    print("c selected");
+    setState(() {
+     cColor=selectedColor;
+     aColor=unselected;
+     bColor=unselected;
+     dColor=unselected;
+   });}
+   if(useranswers[currentindex]==4){
+    print("d selected");
+    setState(() {
+     dColor=selectedColor;
+     aColor=unselected;
+     cColor=unselected;
+     bColor=unselected;
+   });
+  }
+}
 String  lastanswer="none";
 double gx = 0, gy = 0, gz = 0;
   String anylong = "";
-  late String instructions="You have got $_secondsRemaining Minutes, to complete ${widget.questions.length} Questions,...Your time starts now, GoodLuck!";
+  late String instructions="You've got $_secondsRemaining Minutes, to complete ${widget.questions.length} Questions,...Your time starts now, GoodLuck!";
   FlutterTts flutterTts = FlutterTts();
   void speakthewhole() {
     print(useranswers);
     setState(() {
-      anylong = widget.questions[randomized[currentindex]].question +
+      anylong = "Question number${currentindex+1}. "+widget.questions[currentindex].question +
           "." +
           "   " "A.  " +
-          widget.questions[randomized[currentindex]].choicea +
+          widget.questions[currentindex].choicea +
           "." +
           " " "B.  " +
-          widget.questions[randomized[currentindex]].choiceb+
+          widget.questions[currentindex].choiceb+
           "." +
           "  " "C. " +
-          widget.questions[randomized[currentindex]].choicec +
+          widget.questions[currentindex].choicec +
           "." +
           "  " "D.  " +
-          widget.questions[randomized[currentindex]].choiced+
+          widget.questions[currentindex].choiced+
           ".";
     });
     FlutterTts flutterTts = FlutterTts();
@@ -69,43 +128,32 @@ List randomized=[];
   @override
   void initState() {
     addanswers();
-    for(int net=0;net<widget.questions.length;net++){
-     indexes.add(net);
-   }
-   indexescopy=List.from(indexes);
+    addblankanswers();
+    mixcolors();
+    firsttime=true;
+    // disableScreenshot();
     
-  var ran = Random();
-  while(indexescopy.isNotEmpty){
-    var enter = ran.nextInt(indexescopy.length);
-    randomized.add(indexescopy[enter]);
-    indexescopy.removeAt(enter);
-  }
-  print(indexes);
-  print(indexescopy);
-  print(randomized);
-
-    disableScreenshot();
-    
+     _secondsRemaining = widget.seconds*60;
     setState(() {
-      anylong = widget.questions[randomized[currentindex]].question +
+      anylong = "You've got ${_secondsRemaining/60} Minutes, to complete ${widget.questions.length} Questions...Good luck! "+"Question number${currentindex+1}. "+widget.questions[currentindex].question +
           "." +
           "   " "A.  " +
-          widget.questions[randomized[currentindex]].choicea +
+          widget.questions[currentindex].choicea +
           "." +
           " " "B.  " +
-          widget.questions[randomized[currentindex]].choiceb  +
+          widget.questions[currentindex].choiceb  +
           "." +
           "  " "C. " +
-          widget.questions[randomized[currentindex]].choicec  +
+          widget.questions[currentindex].choicec  +
           "." +
           "  " "D.  " +
-          widget.questions[randomized[currentindex]].choiced +
+          widget.questions[currentindex].choiced +
           ".";
     });
-    _secondsRemaining = widget.seconds*60;
-    FlutterTts flutterTts = FlutterTts();
-    flutterTts.setSpeechRate(0.4);
-   flutterTts.speak(instructions);
+
+   FlutterTts flutterTts = FlutterTts();
+   flutterTts.setSpeechRate(0.4);
+   
     flutterTts.speak(anylong);
     super.initState();
     
@@ -121,6 +169,7 @@ List randomized=[];
     _returntimer.cancel();
      WidgetsBinding.instance.removeObserver(this);
     _gyroscopeSubscription.cancel();
+    _scrollController.dispose();
     super.dispose();
   }
   late StreamSubscription<GyroscopeEvent> _gyroscopeSubscription;
@@ -195,18 +244,22 @@ for (int j = 0; j < answers.length; j++) {
   }
 }
   for(int i=0;i<answers.length;i++){
-    if(newanswers[randomized[i]]==useranswers[i]){
+    if(newanswers[i]==useranswers[i]){
        setState(() {
          correct+=1;
        });
     }
   }
+  if(firsttime==true){
+    setState(() {
+      firsttime=false;
+    });
      Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => FINALPAGE(answersinternet:answers,answersusers: useranswers,total: correct,)),
             ); 
   print("New Useranswer");
- 
+  }
 }
    next(){
        
@@ -240,8 +293,8 @@ for (int j = 0; j < answers.length; j++) {
       
       }
    }}
-   
-  List useranswers = [];
+  double x = 0, y = 0, z = 0;
+ List useranswers=[];
   int Determiner = 0;
   bool floodgate = false;
   int currentindex = 0;
@@ -252,6 +305,20 @@ for (int j = 0; j < answers.length; j++) {
       onWillPop: backIsPressed,
       child: Scaffold(
         body: GestureDetector(
+           onHorizontalDragEnd: (DragEndDetails details) {
+    if (details.velocity.pixelsPerSecond.dx > 0) {
+      setState(() {
+        if(currentindex>0){
+        currentindex--;
+        mixcolors();}
+      
+        else{
+          currentindex=currentindex;
+        }
+      });
+       speakthewhole();
+    }
+  },
           onTap: () {
                     speakthewhole();
                    
@@ -266,7 +333,54 @@ for (int j = 0; j < answers.length; j++) {
                       flutterTts.speak(anylarge);
                       if (true) {
                  
-                       _gyroscopeSubscription= gyroscopeEvents.listen((GyroscopeEvent event) {
+                       _gyroscopeSubscription= 
+                      //   accelerometerEvents.listen((AccelerometerEvent event){
+                      //   setState(() {
+                      //     x=event.x;
+                      //     y=event.y;
+                      //   });
+                      //   if(x>7){
+                      //      flutterTts.setSpeechRate(0.4);
+                      //     flutterTts.speak("You Chose A");
+                      //     Determiner = 1;
+                          
+                      //       Vibration.vibrate();
+                      //     setState(() {
+                      //       lastanswer="A";
+                      //     });
+                      //   }
+                      //   if(x<-7){
+                      //      flutterTts.setSpeechRate(0.4);
+                      //     flutterTts.speak("You Chose B");
+                      //     Determiner = 2;
+                          
+                      //       Vibration.vibrate();
+                      //     setState(() {
+                      //       lastanswer="B";
+                      //     });
+                      //   }
+                      //   if(y>7){
+                      //      flutterTts.setSpeechRate(0.4);
+                      //     flutterTts.speak("You Chose C");
+                      //     Determiner = 3;
+                          
+                      //       Vibration.vibrate();
+                      //     setState(() {
+                      //       lastanswer="C";
+                      //     });
+                      //   }
+                      //    if(y<-5){
+                      //      flutterTts.setSpeechRate(0.4);
+                      //     flutterTts.speak("You Chose D");
+                      //     Determiner = 4;
+                          
+                      //       Vibration.vibrate();
+                      //     setState(() {
+                      //       lastanswer="D";
+                      //     });
+                      //   }
+                      // });
+                       gyroscopeEvents.listen((GyroscopeEvent event) {
                           setState(() {
                             // gx = event.x;
                             gy = event.y;
@@ -277,7 +391,8 @@ for (int j = 0; j < answers.length; j++) {
                             flutterTts.setSpeechRate(0.4);
                             flutterTts.speak("You Chose A");
                             Determiner = 1;
-                            
+                            useranswers[currentindex]=Determiner;
+                            mixcolors();
                               Vibration.vibrate();
                             setState(() {
                               lastanswer="A";
@@ -287,7 +402,8 @@ for (int j = 0; j < answers.length; j++) {
                             flutterTts.setSpeechRate(0.4);
                             flutterTts.speak("You Chose B");
                             Determiner = 2;
-                            
+                            useranswers[currentindex]=Determiner;
+                            mixcolors();
                               Vibration.vibrate();
                             setState(() {
                               lastanswer="B";
@@ -300,6 +416,8 @@ for (int j = 0; j < answers.length; j++) {
                             flutterTts.setSpeechRate(0.4);
                             flutterTts.speak("You Chose C");
                             Determiner = 3;
+                            useranswers[currentindex]=Determiner;
+                            mixcolors();
                             setState(() {
                               lastanswer="C";
                             });
@@ -314,8 +432,11 @@ for (int j = 0; j < answers.length; j++) {
                               lastanswer="D";
                             });
                             Determiner = 4;
+                            useranswers[currentindex]=Determiner;
+                            mixcolors();
                           }
                         });
+                        
                       } else {
                         flutterTts.setSpeechRate(0.4);
                         flutterTts.speak("Please hold your phone still, first");
@@ -338,11 +459,18 @@ for (int j = 0; j < answers.length; j++) {
                           "You didn't set any answer,Please longpress to give ananswer, if you Doubletap now,it will be considered as you skipped this question ");
                     }
                   },
+                  onVerticalDragUpdate: (DragUpdateDetails details) {
+        // Handle vertical drag update
+     
+                    remainingtime();}
+                  ,
                    onDoubleTap: () {
+                    print(Determiner);
                     setState(() {
                       floodgate = false;
                     });
-                    useranswers.add(Determiner);
+                    
+                    if(useranswers[currentindex]!=0){
                     setState(() {
                       if (currentindex < widget.questions.length-1) {
                         currentindex++;
@@ -352,14 +480,22 @@ for (int j = 0; j < answers.length; j++) {
                           currentindex = currentindex;
     
                         });
-            
-                     verify(useranswers, answers, questions.length);
+                       
+                      
+                      
+                    //  verify(useranswers, answers, questions.length);
                      flutterTts.stop();
                      compute();
                                
     
                       }
-                    });
+                    });}
+                    if(useranswers[currentindex]==0){
+                      flutterTts.stop();
+                      print("Zero Entered");
+                      flutterTts.speak("Please be advised you didn't set any answer, set an answer to continue, I will read the question again");
+                    }
+                     mixcolors();
                     speakthewhole();
                   },
           child: Stack(
@@ -387,9 +523,9 @@ for (int j = 0; j < answers.length; j++) {
                                  padding: const EdgeInsets.only(top:90.0),
                                  child: Center(
                                   child: Text(
-              _formatDuration(Duration(seconds: _secondsRemaining)),
-              style: TextStyle(fontSize: 30,color:Colors.white),
-                    ),
+                                  _formatDuration(Duration(seconds: _secondsRemaining)),
+                                  style: TextStyle(fontSize: 30,color:Colors.white),
+                                        ),
                               ),
                                ),
                               Center(
@@ -428,7 +564,7 @@ for (int j = 0; j < answers.length; j++) {
                                                 Padding(
                                                   padding: const EdgeInsets.only(top:15.0, left: 20,right: 10,bottom:20),
                                                   child: Text(
-                                                    widget.questions[randomized[currentindex]].question,
+                                                    widget.questions[currentindex].question,
                                                     style: TextStyle(
                                                         color: Color.fromARGB(255, 90, 89, 89),
                                                         fontSize: 25,
@@ -445,7 +581,8 @@ for (int j = 0; j < answers.length; j++) {
                                                           decoration: BoxDecoration(
                                                             color: Colors.white,
                                                             border: Border.all(
-                                                              color:Colors.grey,
+                                                              width: 3,
+                                                              color:aColor,
                                                             ),
                                                             borderRadius: BorderRadius.all(
                                                               Radius.circular(
@@ -456,7 +593,7 @@ for (int j = 0; j < answers.length; j++) {
                                                           child: TextButton(
                                                             onPressed: null,
                                                             child: Text(
-                                                              widget.questions[randomized[currentindex]].choicea,
+                                                              widget.questions[currentindex].choicea,
                                                               style: TextStyle(
                                                                   color: Color.fromARGB(255, 83, 80, 80),
                                                                   
@@ -479,7 +616,8 @@ for (int j = 0; j < answers.length; j++) {
                                                           decoration: BoxDecoration(
                                                             color: Colors.white,
                                                             border: Border.all(
-                                                              color:Colors.grey,
+                                                              width: 3,
+                                                              color:bColor,
                                                             ),
                                                             borderRadius: BorderRadius.all(
                                                               Radius.circular(
@@ -490,7 +628,7 @@ for (int j = 0; j < answers.length; j++) {
                                                           child: TextButton(
                                                             onPressed: null,
                                                             child: Text(
-                                                               widget.questions[randomized[currentindex]].choiceb,
+                                                               widget.questions[currentindex].choiceb,
                                                               style: TextStyle(
                                                                   color: Color.fromARGB(255, 83, 80, 80),
                                                                   
@@ -513,7 +651,8 @@ for (int j = 0; j < answers.length; j++) {
                                                           decoration: BoxDecoration(
                                                             color: Colors.white,
                                                             border: Border.all(
-                                                              color:Colors.grey,
+                                                              width: 3,
+                                                              color:cColor,
                                                             ),
                                                             borderRadius: BorderRadius.all(
                                                               Radius.circular(
@@ -524,7 +663,7 @@ for (int j = 0; j < answers.length; j++) {
                                                           child: TextButton(
                                                             onPressed: null,
                                                             child: Text(
-                                                              widget.questions[randomized[currentindex]].choicec,
+                                                              widget.questions[currentindex].choicec,
                                                               style: TextStyle(
                                                                   color: Color.fromARGB(255, 83, 80, 80),
                                                                   
@@ -547,7 +686,8 @@ for (int j = 0; j < answers.length; j++) {
                                                           decoration: BoxDecoration(
                                                             color: Colors.white,
                                                             border: Border.all(
-                                                              color:Colors.grey,
+                                                              width: 3,
+                                                              color:dColor,
                                                             ),
                                                             borderRadius: BorderRadius.all(
                                                               Radius.circular(
@@ -559,7 +699,7 @@ for (int j = 0; j < answers.length; j++) {
                                                             onPressed: null,
                                                             
                                                             child: Text(
-                                                               widget.questions[randomized[currentindex]].choiced,
+                                                               widget.questions[currentindex].choiced,
                                                               style: TextStyle(
                                                                   color: Color.fromARGB(255, 83, 80, 80),
                                                                   
@@ -572,7 +712,7 @@ for (int j = 0; j < answers.length; j++) {
                                                     ],
                                                   ),
                                                 ),
-                                              ],
+                                              SizedBox(height: 30,)],
                                             ),
                                           ),
                                         ),
@@ -588,6 +728,9 @@ for (int j = 0; j < answers.length; j++) {
       ),
     );
   }
+   void remainingtime() {
+  flutterTts.speak("You have, ${(_secondsRemaining/60).round()} Minutes,left");
+    }
   Future<bool>backIsPressed()async{
    return false;
   }

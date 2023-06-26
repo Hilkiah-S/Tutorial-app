@@ -4,7 +4,9 @@ import 'package:hive/hive.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:tutorialapp/firstpage.dart';
+import 'package:tutorialapp/firstpageforsight.dart';
 import 'package:tutorialapp/sidebarsight.dart';
+import 'package:tutorialapp/debugpage.dart';
 class FINALPAGE extends StatefulWidget {
    List answersinternet;
 
@@ -96,6 +98,10 @@ void dispose(){
          drawer: NavBarSS(),
         body: Scaffold(
         body: GestureDetector(
+           onHorizontalDragEnd: (DragEndDetails details) {
+    if (details.velocity.pixelsPerSecond.dx > 0) {
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Debuding()));
+    };},
           onTap: (){
           flutterTts.speak("You got ${widget.total} out of ${widget.answersinternet.length} ");
           },
@@ -124,7 +130,7 @@ void dispose(){
       onPressed: () {
        Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => Choosepage(),
+              MaterialPageRoute(builder: (context) => Debuding(),
             )); 
       },
       splashRadius: 20,

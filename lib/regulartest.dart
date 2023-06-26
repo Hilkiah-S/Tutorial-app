@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:tutorialapp/finalpageforRegular.dart';
 import 'dart:async';
@@ -18,6 +20,19 @@ class InternetquestionSightRR extends StatefulWidget {
 }
 
 class _InternetquestionSightState extends State<InternetquestionSightRR> with WidgetsBindingObserver  {
+  Color unchanged=Colors.grey;
+  Color changed=Colors.greenAccent;
+  Color reserve=Colors.grey;
+   Color unchanged1=Colors.grey;
+  Color changed1=Colors.greenAccent;
+  Color reserve1=Colors.grey;
+   Color unchanged2=Colors.grey;
+  Color changed2=Colors.greenAccent;
+  Color reserve2=Colors.grey;
+   Color unchanged3=Colors.grey;
+  Color changed3=Colors.greenAccent;
+  Color reserve3=Colors.grey;
+  
   int correct=0;
    final _mybox = Hive.box('dotBox');
 late int _secondsRemaining;
@@ -37,8 +52,10 @@ List indexes=[];
 List indexescopy=[];
 List randomized=[];
 late int secstoreturn;
+late bool firsttime;
   @override
   void initState() {
+     firsttime=true;
      for(int net=0;net<widget.questions.length;net++){
      indexes.add(net);
    }
@@ -62,7 +79,7 @@ late int secstoreturn;
     }
    }
     );
-    disableScreenshot();
+    // disableScreenshot();
    
     super.initState();
      WidgetsBinding.instance.addObserver(this);
@@ -106,10 +123,14 @@ useranswers.add(0);
           
          }
           compute();
+          if(firsttime==true){
+            setState(() {
+              firsttime=false;
+            });
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => FINALPAGERR(answersusers:correct,numberinternet: widget.questions.length,)),
-          );
+          );}
           _timer.cancel();
           
         } else {
@@ -230,7 +251,21 @@ useranswers.add(0);
   bool floodgate = false;
   int currentindex = 0;
   int c1 = 0, c2 = 1, c3 = 2, c4 = 3;
-  @override
+  List<String> lights=["f","f","f","f"];
+  void lightup(int choseindex){
+  setState(() {
+    lights[choseindex-1]=="t";
+  });
+  lightaction();
+  }
+  void lightaction(){
+    for(int p=0;p<4;p++){
+      if(lights[p]=="t"){
+
+      }
+    }
+  }
+    @override
   Widget build(BuildContext context) {
     return  WillPopScope(
       onWillPop:backIsPressed,
@@ -252,223 +287,272 @@ useranswers.add(0);
                   ),
                   child:Padding(
                     padding: const EdgeInsets.only(top:30),
-                    child: Column(
-                      children: [
-                        Stack(
-                          children: [
-                             Padding(
-                               padding: const EdgeInsets.only(top:90.0),
-                               child: Center(
-                                child: Text(
-            _formatDuration(Duration(seconds: _secondsRemaining)),
-            style: TextStyle(fontSize: 30,color:Colors.white),
-          ),
-                            ),
-                             ),
-                            Center(
-                              child: Padding(
-                                padding: const EdgeInsets.only(top:35,bottom: 20),
-                                child: TweenAnimationBuilder(tween: Tween(begin: 0.0,end: 1.0), duration: Duration(minutes: widget.seconds), builder: ((context,value,_) => SizedBox(
-                                  width: 150,
-                                  height: 150,
-                                  child: CircularProgressIndicator(
-                                    value: value,
-                                    backgroundColor: Colors.deepOrange,
-                                    strokeWidth: 4,
-                                  
-                                  ),
-                                ))),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Stack(
+                            children: [
+                               Padding(
+                                 padding: const EdgeInsets.only(top:90.0),
+                                 child: Center(
+                                  child: Text(
+                                _formatDuration(Duration(seconds: _secondsRemaining)),
+                                style: TextStyle(fontSize: 30,color:Colors.white),
                               ),
-                            ),
-                           
-                          ],
-                        ),
-                        Center(
-                              
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(left:15.0,right: 15,bottom: 8),
-                                      child: Container(
-                                        width: double.infinity,
-                                        height: 400,
-                                        decoration:BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.all(Radius.circular(30))
-                                        ) ,
-                                        child: SingleChildScrollView(
-                                          child: Column(
-                                           
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(top:15.0, left: 20,right: 10,bottom:20),
-                                                child: Text(
-                                                  widget.questions[randomized[currentindex]].question,
-                                                  style: TextStyle(
-                                                      color: Color.fromARGB(255, 90, 89, 89),
-                                                      fontSize: 25,
-                                                      fontWeight: FontWeight.bold),
+                              ),
+                               ),
+                              Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top:35,bottom: 20),
+                                  child: TweenAnimationBuilder(tween: Tween(begin: 0.0,end: 1.0), duration: Duration(minutes: widget.seconds), builder: ((context,value,_) => SizedBox(
+                                    width: 150,
+                                    height: 150,
+                                    child: CircularProgressIndicator(
+                                      value: value,
+                                      backgroundColor: Colors.deepOrange,
+                                      strokeWidth: 4,
+                                    
+                                    ),
+                                  ))),
+                                ),
+                              ),
+                             
+                            ],
+                          ),
+                          Center(
+                                
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(left:15.0,right: 15,bottom: 8),
+                                        child: Container(
+                                          width: double.infinity,
+                                          height: 400,
+                                          decoration:BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.all(Radius.circular(30))
+                                          ) ,
+                                          child: SingleChildScrollView(
+                                            child: Column(
+                                             
+                                              children: [
+                                                Padding(
+                                                  padding: const EdgeInsets.only(top:15.0, left: 20,right: 10,bottom:20),
+                                                  child: Text(
+                                                    widget.questions[randomized[currentindex]].question,
+                                                    style: TextStyle(
+                                                        color: Color.fromARGB(255, 90, 89, 89),
+                                                        fontSize: 25,
+                                                        fontWeight: FontWeight.bold),
+                                                  ),
                                                 ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(left:10,right: 10,top:10,bottom: 5),
-                                                child: Row(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: [
-                                                    Expanded(
-                                                      child: Container(
-                                                        decoration: BoxDecoration(
-                                                          color: Colors.white,
-                                                          border: Border.all(
-                                                            color:Colors.grey,
-                                                          ),
-                                                          borderRadius: BorderRadius.all(
-                                                            Radius.circular(
-                                                              30
+                                                Padding(
+                                                  padding: const EdgeInsets.only(left:10,right: 10,top:10,bottom: 5),
+                                                  child: Row(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: [
+                                                      Expanded(
+                                                        child: Container(
+                                                          decoration: BoxDecoration(
+                                                            color: Colors.white,
+                                                            border: Border.all(
+                                                              color:unchanged,
+                                                            ),
+                                                            borderRadius: BorderRadius.all(
+                                                              Radius.circular(
+                                                                30
+                                                              )
                                                             )
-                                                          )
-                                                        ),
-                                                        child: TextButton(
-                                                          onPressed: () {
-                                                            useranswers.add(1);
-                                                          
-                                                            next();
-                                                          },
-                                                          child: Text(
-                                                            widget.questions[randomized[currentindex]].choicea,
-                                                            style: TextStyle(
-                                                                color: Color.fromARGB(255, 83, 80, 80),
-                                                                
-                                                                fontSize: 25),
                                                           ),
-                                                          
+                                                          child: TextButton(
+                                                            onPressed: () {
+                                                              useranswers.add(1);
+                                                              setState(() {
+                                                                unchanged=changed;
+                                                              });
+                                                              setState(() {
+                                                                unchanged=reserve;
+                                                              });
+                                                              next();
+                                                            },
+                                                            child: Text(
+                                                              widget.questions[randomized[currentindex]].choicea,
+                                                              style: TextStyle(
+                                                                  color: Color.fromARGB(255, 83, 80, 80),
+                                                                  
+                                                                  fontSize: 25),
+                                                            ),
+                                                            
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  ],
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(left:10,right: 10,top:5,bottom: 5),
-                                                child: Row(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: [
-                                                    Expanded(
-                                                      child: Container(
-                                                        decoration: BoxDecoration(
-                                                          color: Colors.white,
-                                                          border: Border.all(
-                                                            color:Colors.grey,
-                                                          ),
-                                                          borderRadius: BorderRadius.all(
-                                                            Radius.circular(
-                                                              30
+                                                Padding(
+                                                  padding: const EdgeInsets.only(left:10,right: 10,top:5,bottom: 5),
+                                                  child: Row(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: [
+                                                      Expanded(
+                                                        child: Container(
+                                                          decoration: BoxDecoration(
+                                                            color: Colors.white,
+                                                            border: Border.all(
+                                                              color:unchanged1,
+                                                            ),
+                                                            borderRadius: BorderRadius.all(
+                                                              Radius.circular(
+                                                                30
+                                                              )
                                                             )
-                                                          )
-                                                        ),
-                                                        child: TextButton(
-                                                          onPressed: () {
-                                                            useranswers.add(2);
-                                                            
-                                                            
-                                                            next();
-                                                          },
-                                                          child: Text(
-                                                             widget.questions[randomized[currentindex]].choiceb,
-                                                            style: TextStyle(
-                                                                color: Color.fromARGB(255, 83, 80, 80),
-                                                                
-                                                                fontSize: 25),
                                                           ),
-                                                          
+                                                          child: TextButton(
+                                                            onPressed: () {
+                                                              useranswers.add(2);
+                                                              setState(() {
+                                                                unchanged1=changed1;
+                                                              });
+                                                              setState(() {
+                                                                unchanged1=reserve1;
+                                                              });
+                                                              
+                                                              next();
+                                                            },
+                                                            child: Text(
+                                                               widget.questions[randomized[currentindex]].choiceb,
+                                                              style: TextStyle(
+                                                                  color: Color.fromARGB(255, 83, 80, 80),
+                                                                  
+                                                                  fontSize: 25),
+                                                            ),
+                                                            
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  ],
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
-                                             Padding(
-                                                padding: const EdgeInsets.only(left:10,right: 10,top:5,bottom: 5),
-                                                child: Row(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: [
-                                                    Expanded(
-                                                      child: Container(
-                                                        decoration: BoxDecoration(
-                                                          color: Colors.white,
-                                                          border: Border.all(
-                                                            color:Colors.grey,
-                                                          ),
-                                                          borderRadius: BorderRadius.all(
-                                                            Radius.circular(
-                                                              30
+                                               Padding(
+                                                  padding: const EdgeInsets.only(left:10,right: 10,top:5,bottom: 5),
+                                                  child: Row(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: [
+                                                      Expanded(
+                                                        child: Container(
+                                                          decoration: BoxDecoration(
+                                                            color: Colors.white,
+                                                            border: Border.all(
+                                                              color:unchanged2,
+                                                            ),
+                                                            borderRadius: BorderRadius.all(
+                                                              Radius.circular(
+                                                                30
+                                                              )
                                                             )
-                                                          )
-                                                        ),
-                                                        child: TextButton(
-                                                          onPressed: () {
-                                                            useranswers.add(3);
-                                                            
-                                                            
-                                                            next();
-                                                          },
-                                                          child: Text(
-                                                            widget.questions[randomized[currentindex]].choicec,
-                                                            style: TextStyle(
-                                                                color: Color.fromARGB(255, 83, 80, 80),
-                                                                
-                                                                fontSize: 25),
                                                           ),
-                                                          
+                                                          child: TextButton(
+                                                            onPressed: () {
+                                                              useranswers.add(3);
+                                                              setState(() {
+                                                                unchanged2=changed2;
+                                                              });
+                                                              setState(() {
+                                                                unchanged2=reserve2;
+                                                              });
+                                                              
+                                                              next();
+                                                            },
+                                                            child: Text(
+                                                              widget.questions[randomized[currentindex]].choicec,
+                                                              style: TextStyle(
+                                                                  color: Color.fromARGB(255, 83, 80, 80),
+                                                                  
+                                                                  fontSize: 25),
+                                                            ),
+                                                            
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  ],
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(left:10,right: 10,top:5,bottom: 5),
-                                                child: Row(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: [
-                                                    Expanded(
-                                                      child: Container(
-                                                        decoration: BoxDecoration(
-                                                          color: Colors.white,
-                                                          border: Border.all(
-                                                            color:Colors.grey,
-                                                          ),
-                                                          borderRadius: BorderRadius.all(
-                                                            Radius.circular(
-                                                              30
+                                                Padding(
+                                                  padding: const EdgeInsets.only(left:10,right: 10,top:5,bottom: 5),
+                                                  child: Row(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: [
+                                                      Expanded(
+                                                        child: Container(
+                                                          decoration: BoxDecoration(
+                                                            color: Colors.white,
+                                                            border: Border.all(
+                                                              color:unchanged3,
+                                                            ),
+                                                            borderRadius: BorderRadius.all(
+                                                              Radius.circular(
+                                                                30
+                                                              )
                                                             )
-                                                          )
-                                                        ),
-                                                        child: TextButton(
-                                                          onPressed: () {
-                                                            useranswers.add(4);
-                                                            next();
-                                                          },
-                                                          child: Text(
-                                                             widget.questions[randomized[currentindex]].choiced,
-                                                            style: TextStyle(
-                                                                color: Color.fromARGB(255, 83, 80, 80),
-                                                                
-                                                                fontSize: 25),
                                                           ),
-                                                          
+                                                          child: TextButton(
+                                                            onPressed: () {
+                                                              useranswers.add(4);
+                                                              setState(() {
+                                                                unchanged3=changed3;
+                                                              });
+                                                              setState(() {
+                                                                unchanged3=reserve3;
+                                                              });
+                                                              next();
+                                                            },
+                                                            child: Text(
+                                                               widget.questions[randomized[currentindex]].choiced,
+                                                              style: TextStyle(
+                                                                  color: Color.fromARGB(255, 83, 80, 80),
+                                                                  
+                                                                  fontSize: 25),
+                                                            ),
+                                                            
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  ],
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ), 
-                        
-                        ),
-                      ],
+                                      ), 
+                          
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(bottom:40.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                //  Padding(
+                                //    padding: const EdgeInsets.all(10.0),
+                                //    child: Container(
+                                //                              decoration: BoxDecoration(
+                                //                                color: Colors.white,
+                                //                                border: Border.all(color: Colors.grey),
+                                //                                borderRadius: BorderRadius.circular(20.0),
+                                //                              ),
+                                //                              child: IconButton(
+                                //                                onPressed: () {
+                                //                                  // Handle button press
+                                //                                },
+                                //                                icon: Icon(Icons.arrow_back,size: 39,color: Colors.grey,),
+                                //                              ),
+                                //                          ),
+                                //  ),
+                                 Center(child: Text("${currentindex+1}""/""${widget.questions.length}",style: TextStyle(color: Colors.white,fontSize: 30),)),
+                             
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   )),
           ],

@@ -230,6 +230,10 @@ void dispose(){
                   ))),
             ),
             body: GestureDetector(
+                 onHorizontalDragEnd: (DragEndDetails details) {
+    if (details.velocity.pixelsPerSecond.dx > 0) {
+        Navigator.pop(context);
+    };},
                 onTap: () {
                   speakthewhole();
                 
@@ -338,8 +342,8 @@ void dispose(){
                           });
                           Determiner = 4;
                         }
-                      }
-                      );
+                      });
+                      
                     } else {
                       flutterTts.setSpeechRate(0.4);
                       flutterTts.speak("Please hold your phone still, first");

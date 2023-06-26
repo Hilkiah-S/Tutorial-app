@@ -89,7 +89,7 @@ void initState(){
     super.initState();
         
     flutterTts.setSpeechRate(0.4);
-    flutterTts.speak("Hello, you can login to your account with fingerprint,long press to use fingerprint");
+    flutterTts.speak("you are now on the login page, you can long press and use fingerprint to login");
     if(_mybox.get(70)!=null){
       setState(() {
         timefingerprint=true;
@@ -312,6 +312,7 @@ void dispose(){
                  padding: const EdgeInsets.only(right:55.0),
                  child: IconButton(onPressed:
                   timefingerprint? ()async {
+                    flutterTts.speak("Now place your hand on the fingerprint sensor");
                  bool isAuthenticated = await authenticate();
                   if(isAuthenticated){
                     print("Verified");
